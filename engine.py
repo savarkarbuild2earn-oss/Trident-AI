@@ -5,7 +5,7 @@ import ta
 def scan_stock(ticker):
     try:
         stock = yf.Ticker(ticker)
-        df = stock.history(period="6mo", interval="1d") # 6 months of data for deep regime scanning
+        df = stock.history(period="6mo", interval="1d")
         if df.empty:
             return None
         
@@ -19,12 +19,15 @@ def scan_stock(ticker):
         if market_cap < 5000000000 or avg_volume < 50000:
             return {"status": "BLOCKED", "reason": "High manipulation risk / low liquidity criteria flagged."}
         
-        # CALCULATE INTERNALS VIA TA MODULE
+        # BULLETPROOF MATHEMATICAL CALCULATIONS (Using Pandas direct rolling math)
         df['RSI'] = ta.momentum.rsi(df['Close'], window=14)
-        df['SMA_50'] = ta.trend.sma_indicator(df['Close'], window=50)
-        df['EMA_20'] = ta.trend.ema_indicator(df['Close'], window=20)
-        df['BB_High'] = ta.volatility.bollinger_hband(df['Close'], window=20, window_dev=2)
-        df['BB_Low'] = ta.volatility.bollinger_lband(df['Close'], window=20, window_dev=2)
+        df['SMA_50'] = df['Close'].rolling(window=50).mean() # Native Pandas (Zero error risk)
+        df['EMA_20'] = df['Close'].ewm(span=20, adjust=False).mean() # Native Pandas (Zero error risk)
+        
+        # Bollinger Bands using standard ta utilities
+        indicator_bb = ta.volatility.BollingerBands(close=df["Close"], window=20, window_dev=2)
+        df['BB_High'] = indicator_bb.bollinger_hband()
+        df['BB_Low'] = indicator_bb.bollinger_lband()
         
         current_price = df['Close'].iloc[-1]
         current_rsi = df['RSI'].iloc[-1]
