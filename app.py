@@ -56,7 +56,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # SEBI LEGAL DISCLOSURE GUARDFRAIL
-st.error("⚠️ **SEBI DISCLOSURE & STATUTORY WARNING:** We are NOT SEBI-registered advisers. All metrics simulate educational strategies.")
+st.error("⚠️ **SEBI DISCLOSURE & STATUTORY WARNING:** We are NOT registered with SEBI as an investment advisor or research analyst. All metrics simulate educational strategies.")
 
 # FETCH DYNAMIC INDEX TRACKERS
 benchmarks = fetch_index_benchmarks()
@@ -71,7 +71,7 @@ st.markdown("<br>", unsafe_allow_html=True)
 
 # INITIALIZE PORSTFOLIO AND ALGO MATRIX RESERVES
 if 'user_portfolio' not in st.session_state:
-    st.session_state.user_portfolio = [] # Array format: [{"ticker": T, "posture": P}]
+    st.session_state.user_portfolio = [] 
 if 'cached_df_intra' not in st.session_state:
     st.session_state.cached_df_intra = None
 if 'cached_df_long' not in st.session_state:
@@ -80,7 +80,7 @@ if 'cached_top_10' not in st.session_state:
     st.session_state.cached_top_10 = None
 
 # ==============================================================================
-# UNIFIED OPENING BELL REFRESH FRAGMENT CONTAINER (SYNCS WORKSPACE AND REVIEW NODES)
+# UNIFIED OPENING BELL REFRESH FRAGMENT CONTAINER
 # ==============================================================================
 @st.fragment(run_every=60)
 def process_synchronized_terminal_grid():
@@ -88,13 +88,11 @@ def process_synchronized_terminal_grid():
     now_time = datetime.now(ist_tz)
     is_opening_bell = (now_time.hour == 9 and now_time.minute == 15)
     
-    # Trigger baseline seed data if cache arrays are empty on boot
     if st.session_state.cached_df_intra is None or st.session_state.cached_df_long is None or st.session_state.cached_top_10 is None:
         with st.spinner("Compiling unified daily baseline data streams safely..."):
             st.session_state.cached_df_intra, st.session_state.cached_df_long = autonomous_index_scanner()
             st.session_state.cached_top_10 = fetch_top_10_active_momentum_stocks()
             
-    # FORCE UNIFIED RE-SCAN OF DATA TABLES & WORKSPACE INPUTS ENTIRELY AT 09:15 AM
     if is_opening_bell:
         st.session_state.cached_df_intra, st.session_state.cached_df_long = autonomous_index_scanner()
         st.session_state.cached_top_10 = fetch_top_10_active_momentum_stocks()
@@ -143,8 +141,7 @@ def process_synchronized_terminal_grid():
             st.markdown('<div class="user-card">', unsafe_allow_html=True)
             st.write("##### 💼 Multi-Stock Active Portfolio Ledger Scanner")
             
-            # Input layout mechanics
-            col_ticker_in, col_posture_in = st.columns([2, 2])
+            col_ticker_in, col_posture_in = st.columns(2)
             with col_ticker_in:
                 input_symbol = st.text_input("Enter Asset Ticker (e.g., RELIANCE, TCS, SBIN):", "RELIANCE").strip().upper()
             with col_posture_in:
@@ -156,7 +153,6 @@ def process_synchronized_terminal_grid():
                     st.success(f"Successfully pinned {input_symbol} into ledger.")
                     st.rerun()
             
-            # Reset Button
             if st.session_state.user_portfolio:
                 if st.button("🗑️ Clear saved Ledger Data"):
                     st.session_state.user_portfolio = []
@@ -177,3 +173,8 @@ def process_synchronized_terminal_grid():
             st.write("##### 📊 Capital Allocation & Momentum Sizer (Unrestricted)")
             capital_input = st.number_input("Input total cash amount (INR) to deploy across today's active volume metrics:", min_value=1, value=50000, step=1000)
             
+            st.write("###### 🤖 Automated Capital Diversification Breakdown:")
+            st.caption("Calculated across the top 10 highest-volume stocks dynamically extracted by the analyzer today:")
+            
+            split_allocation_data = []
+            per_stock_capital = capital_input / 10
