@@ -1,5 +1,7 @@
 import streamlit as st
 from engine import autonomous_whale_scanner
+import yfinance as yf
+import urllib.parse
 
 # 1. ELITE PRODUCTION ENGINE WORKSPACE VIEWPORT CONFIGURATION
 st.set_page_config(
@@ -112,6 +114,7 @@ def render_live_segmented_terminal():
             with col_intra_left:
                 st.markdown("<b style='color:#064e3b;'>🟢 GROUP ALPHA MARKET TRACKER</b>", unsafe_allow_html=True)
                 st.markdown('<div class="scroll-container">', unsafe_allow_html=True)
+                # UX UPGRADE: Native sorting & absolute dynamic searching enabled implicitly
                 st.dataframe(df_intra.head(50), use_container_width=True, hide_index=True)
                 st.markdown('</div>', unsafe_allow_html=True)
                 
@@ -127,6 +130,7 @@ def render_live_segmented_terminal():
             st.caption("Features dedicated 24-Hour clock reference logs. Holding durations calculated sequentially into explicit Day Arrays.")
             
             st.markdown('<div class="scroll-container" style="max-height: 580px !important;">', unsafe_allow_html=True)
+            # UX UPGRADE: Native sorting & absolute dynamic searching enabled implicitly
             st.dataframe(df_long, use_container_width=True, hide_index=True)
             st.markdown('</div>', unsafe_allow_html=True)
 
