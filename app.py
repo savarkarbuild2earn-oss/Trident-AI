@@ -75,9 +75,23 @@ if st.session_state.active_ticker:
         
         with beginner_tab:
             st.header(f"Strategy Routing: {result['decision']}")
+            
+            # VISUAL INDEX BLOCK
             st.write(f"**Trident Confluence Calculation Metric Index:** {result['raw_score']}/100")
             st.progress(result['raw_score'] / 100)
             
+            # ==============================================================================
+            # CO-FOUNDER UPGRADE: AUTOMATED INTERACTIVE ONBOARDING DICTIONARY
+            # ==============================================================================
+            st.markdown("### 📘 How to Read Your Algorithmic Score:")
+            if result['raw_score'] >= 75:
+                st.success("🔥 **Score 75-100 (High Confluence Edge):** All our independent math models agree. The stock is in a healthy upward trend, showing strong buying volume, and is technically safe from sudden manipulation cascades.")
+            elif 40 <= result['raw_score'] < 75:
+                st.warning("⚖️ **Score 40-74 (Mixed Market Conditions):** The indicators are split. The trend might be turning sideways, or big institutions are waiting. It is smarter to hold your position or wait for a clear breakout pattern.")
+            else:
+                st.error("🚨 **Score 0-39 (High Markdown/Distribution Risk):** Serious technical decay. Selling pressure is dominating the order books. Complete beginners should strictly avoid entering at this price line.")
+            
+            st.markdown("---")
             st.metric(label=f"Current Market Price ({current_mode} Stream)", value=f"₹{result['price']}")
             st.info(f"**Unified Diagnostic Reasoning:** {result['explanation']}")
             
@@ -137,8 +151,7 @@ if st.session_state.portfolio:
     
     st.markdown("### 🚀 Invite Trading Communities & Share Records!")
     
-    # SYSTEM UPGRADE: VISUAL EMBLEMS IN PLACE OF GENERIC BUTTON BLOCKS
-    col_wa, col_tg, col_empty = st.columns([1, 1, 4])
+    col_wa, col_tg, col_empty = st.columns()
     with col_wa:
         st.link_button("💬 WhatsApp", f"https://whatsapp.com{encoded_msg}")
     with col_tg:
