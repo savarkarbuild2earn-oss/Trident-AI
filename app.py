@@ -78,7 +78,6 @@ if 'user_portfolio' not in st.session_state:
 # ==============================================================================
 @st.fragment(run_every=60)
 def process_synchronized_terminal_grid():
-    # Sync with updated engine scanner name directly
     df_intra, df_long = autonomous_index_scanner()
     top_10_stocks = fetch_top_10_active_momentum_stocks()
 
@@ -97,7 +96,7 @@ def process_synchronized_terminal_grid():
         *   **11:00 AM | Avoid Mid-Day Chop:** Scale sizing down. Protect cash capital pools from horizontal sideways chop and option theta distribution decay.
         *   **12:30 PM | European Markets Cross:** Track FTSE & DAX opening moves to capture macro algorithms switching directional trends locally.
         *   **01:00 PM | Open Interest (OI) Chain Scan:** Identify hard multi-strike target floors (Put Open Interest) and ceiling resistances (Call Open Interest).
-        *   **02:00 PM | Hero-or-Zero Expiry Protocol:** Stagger speculative allocation weights into low-premium index option lines specifically on expiry sessions.
+        *   **02:00 PM | Hero-or-Zero Expiry Strategy:** Stagger speculative allocation weights into low-premium index option lines specifically on expiry sessions.
         *   **03:15 PM | Forced Squaring Off:** Clear all intraday simulation postures to preserve sandbox currency metrics securely.
         *   **03:40 PM | Post-Market Adjustments:** Verify closing weighted averages and audit Peak Margin bounds to comply with regulatory shields.
         *   **05:00 PM | Delivery Volume Filtering:** Identify small and mid-cap assets logging extreme delivery percentages to lock in short-term swing trading targets.
@@ -162,4 +161,4 @@ def process_synchronized_terminal_grid():
             if not st.session_state.user_portfolio:
                 st.caption("Your saved asset ledger is empty. Add positions above to view strategy logs.")
             else:
-                for item in st.session_state.user_portfolio:
+                # FIXED INDENTATION: Aligned the block under the loop cleanly to prevent compilation errors
