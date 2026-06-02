@@ -1,12 +1,15 @@
 import streamlit as st
 from engine import autonomous_whale_scanner
+import time
 
 # Configure wide responsive fin-tech layout format
-st.set_page_config(page_title="Trident-AI Real-Time Engine", layout="wide")
+st.set_page_config(page_title="Trident-AI Streaming Terminal", layout="wide")
 
 st.markdown("""
     <style>
+    /* Premium light financial backdrop */
     .stApp { background-color: #f8fafc !important; color: #1e293b !important; }
+    
     .header-panel {
         background: linear-gradient(90deg, #0f172a 0%, #1e3a8a 100%);
         padding: 24px;
@@ -15,14 +18,35 @@ st.markdown("""
         margin-bottom: 24px;
         box-shadow: 0 4px 15px rgba(15, 23, 42, 0.15);
     }
+    .pulse-indicator {
+        background: rgba(16, 185, 129, 0.2);
+        color: #047857;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 700;
+        border: 1px solid rgba(16, 185, 129, 0.4);
+        display: inline-block;
+        animation: blinker 1.5s linear infinite;
+    }
+    @keyframes blinker {
+        50% { opacity: 0.5; }
+    }
     </style>
 """, unsafe_allow_html=True)
 
-# Main Application Banner
+# Main Application Banner Framework
 st.markdown("""
     <div class="header-panel">
-        <h1 style="margin: 0; font-size: 30px; font-weight: 900; letter-spacing: -0.5px;">🔱 TRIDENT-AI SYSTEM AUTOMATION</h1>
-        <p style="margin: 4px 0 0 0; font-family: monospace; font-size: 13px; color: #cbd5e1;">[ Status: Real-Time Volume Velocity Scanner Active // Time-Stamped Alert Feed Enabled ]</p>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <h1 style="margin: 0; font-size: 30px; font-weight: 900; letter-spacing: -0.5px;">🔱 TRIDENT-AI QUANT INTERACTIVE</h1>
+                <p style="margin: 4px 0 0 0; font-family: monospace; font-size: 13px; color: #cbd5e1;">[ Status: Fully Autonomous Market Mapping Core Active ]</p>
+            </div>
+            <div style="text-align: right;">
+                <div class="pulse-indicator">📡 LIVE SCANNER AUTO-STREAMING</div>
+            </div>
+        </div>
     </div>
 """, unsafe_allow_html=True)
 
@@ -34,24 +58,28 @@ st.error(
 )
 
 st.markdown("<br>", unsafe_allow_html=True)
-st.subheader("⏱️ Live Time-Stamped Execution Matrix Feed")
-st.write("The multi-resource network is scanning the live order book values to pinpoint precise block execution times:")
+st.subheader("⏱️ Live Dynamic Execution Matrix Feed")
+st.write("This section updates itself automatically every 10 seconds. Watch the execution timestamps and buy/sell signals switch in real-time as the whales shift position:")
 
-# Trigger the automated dashboard array instantly
-with st.spinner("Synchronizing time streams and processing live transaction activity layers..."):
-    automated_report = autonomous_whale_scanner()
+# ==============================================================================
+# CO-FOUNDER UPGRADE: AUTOMATED BACKGROUND REACTION FRAGMENT
+# ==============================================================================
+@st.fragment(run_every=10)
+def render_live_streaming_feed():
+    # Inside this fragment container, the table re-scans the market on its own loop
+    with st.spinner("Re-calculating price structures and streaming live volumes..."):
+        automated_report = autonomous_whale_scanner()
 
-if automated_report.empty:
-    st.info("The algorithm completed its workflow loop and found no active anomalies crossing our risk shields. System auto-refreshing shortly.")
-else:
-    # Present the complete, time-stamped automated market entry/exit report cleanly
-    st.dataframe(automated_report, use_container_width=True, hide_index=True)
+    if automated_report.empty:
+        st.info("The algorithm completed its workflow loop and found no active anomalies crossing our risk shields. System auto-refreshing shortly.")
+    else:
+        # Present the complete, time-stamped automated market entry/exit report cleanly
+        st.dataframe(automated_report, use_container_width=True, hide_index=True)
+    
+    st.caption(f"Last data pipeline sweep compiled successfully. Next automatic stream refresh in 10 seconds.")
 
-st.markdown("<br><br>", unsafe_allow_html=True)
-col_btn, col_empty = st.columns(2)
-with col_btn:
-    if st.button("🔄 Force Re-Scan Real-Time Volumes"):
-        st.rerun()
+# Trigger our self-running frontend fragment container loop
+render_live_streaming_feed()
 
 st.markdown("---")
 st.caption("🔒 Trident-AI Proprietary Automation Architecture. 100% Non-Commercial Educational Simulation Engine.")
