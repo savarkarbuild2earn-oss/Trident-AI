@@ -118,7 +118,6 @@ if st.session_state.active_ticker:
             st.subheader("🏆 Trident-AI Global Practice Leaderboard")
             st.caption("Compete with elite retail portfolio managers risk-free across the globe.")
             
-            # SAFE BULLETPROOF LEADERBOARD STRUCTURING
             leaderboard_data = [
                 {"Rank": 1, "Trader Name": "Alpha_Quant_IN", "Virtual Balance": "₹12,45,200.00", "Weekly Gain": "+24.5%"},
                 {"Rank": 2, "Trader Name": "NiftyWhale", "Virtual Balance": "₹11,12,000.00", "Weekly Gain": "+11.2%"},
@@ -136,14 +135,15 @@ if st.session_state.portfolio:
     share_msg = f"I am practicing my stock strategy metrics completely risk-free using Trident-AI! Check out the platform: {clean_url}"
     encoded_msg = urllib.parse.quote(share_msg)
     
+    # CLEAN, NATIVE STREAMLIT SHARE LINK BUTTONS (NO CRASH RISK)
     st.markdown("### 🚀 Invite Trading Communities & Share Records!")
+    st.write(f"🔗 **Your Share Link:** {clean_url}")
+    
     col_wa, col_tg = st.columns(2)
     with col_wa:
-        whatsapp_html = f'<a href="https://whatsapp.com{encoded_msg}" target="_blank"><button style="background-color:#25D366;color:white;border:none;padding:10px 20px;border-radius:5px;cursor:pointer;font-weight:bold;">🟢 Share to WhatsApp Trading Groups</button></a>'
-        st.markdown(whatsapp_html, unsafe_url_allowed=True)
+        st.link_button("🟢 Share to WhatsApp Trading Groups", f"https://whatsapp.com{encoded_msg}")
     with col_tg:
-        telegram_html = f'<a href="https://t.me{clean_url}&text={urllib.parse.quote("Practicing my algorithmic stock metrics completely risk-free using Trident-AI!")}" target="_blank"><button style="background-color:#0088cc;color:white;border:none;padding:10px 20px;border-radius:5px;cursor:pointer;font-weight:bold;">🔵 Post to Telegram Community Channels</button></a>'
-        st.markdown(telegram_html, unsafe_url_allowed=True)
+        st.link_button("🔵 Post to Telegram Community Channels", f"https://t.me{clean_url}&text={urllib.parse.quote('Testing trades risk-free on Trident-AI!')}")
 
 st.markdown("---")
 st.caption(
