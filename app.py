@@ -1,5 +1,8 @@
 import streamlit as st
-from engine import analyze_user_position, optimize_capital_allocation, fetch_index_benchmarks, is_market_open, autonomous_whale_scanner
+# CO-FOUNDER REPAIR: Fixed import function name from autonomous_whale_scanner to autonomous_index_scanner
+from engine import analyze_user_position, optimize_capital_allocation, fetch_index_benchmarks, is_market_open, autonomous_index_scanner
+import yfinance as yf
+import urllib.parse
 
 # 1. ELITE PRODUCTION ENGINE WORKSPACE VIEWPORT CONFIGURATION
 st.set_page_config(page_title="Trident-AI Premium Live Terminal", layout="wide", initial_sidebar_state="collapsed")
@@ -53,7 +56,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # SEBI LEGAL DISCLOSURE GUARDFRAIL
-st.error("⚠️ **SEBI DISCLOSURE & STATUTORY WARNING:** We are NOT SEBI-registered advisors. All code handles simulated strategy layouts.")
+st.error("⚠️ **SEBI DISCLOSURE & STATUTORY WARNING:** We are NOT registered with SEBI as an investment advisor or research analyst. All code handles simulated strategy layouts.")
 
 # FETCH DYNAMIC MARKET BENCHMARKS
 benchmarks = fetch_index_benchmarks()
@@ -72,10 +75,11 @@ st.markdown("<br>", unsafe_allow_html=True)
 @st.fragment(run_every=3600)
 def render_live_segmented_terminal():
     with st.spinner("Processing Nifty & Sensex indices data streams safely..."):
-        df_intra, df_long = autonomous_whale_scanner()
+        # CO-FOUNDER REPAIR: Updated background calculation function name call
+        df_intra, df_long = autonomous_index_scanner()
 
     if df_intra.empty or df_long.empty:
-        st.warning("Re-running asset calculation scanner loop automatically...")
+        st.warning("Synchronizing cloud pipeline stream feeds. Re-running asset calculation scanner loop automatically...")
     else:
         tab_intraday, tab_longterm, tab_user_dashboard = st.tabs([
             "⚡ REAL-TIME INTRADAY EXECUTIONS (50/50 Split View)", 
