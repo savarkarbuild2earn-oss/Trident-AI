@@ -203,7 +203,7 @@ if st.session_state.active_ticker:
             with col_metric_1:
                 st.metric(label=f"LIVE MARKET VALUATION ({current_mode})", value=f"₹{result['price']}")
             with col_metric_2:
-                st.info(f"**System Diagnostic Logic Breakdown:** {result['explanation']}")
+                st.info(f"**AI Analyst Explanation:** {result['explanation']}")
             
             st.markdown("<br><h4 style='color:#0f172a; font-weight:800; margin-bottom:10px;'>📊 HISTORICAL PRICE VECTOR FEED</h4>", unsafe_allow_html=True)
             stock_data = yf.Ticker(current_ticker).history(period="1mo" if current_mode == "Intraday" else "3mo")
@@ -213,7 +213,7 @@ if st.session_state.active_ticker:
         with pro_tab:
             st.markdown('<div class="trade-panel">', unsafe_allow_html=True)
             st.markdown("<h3 style='color:#0f172a; font-weight:800; margin-top:0;'>📊 Quantitative Metric Stream Matrix</h3>", unsafe_allow_html=True)
-            # CO-FOUNDER REPAIR: SECURELY BALANCED JSON BRACKETS HERE
-            st.json({
-                "Target Asset Ticker Key": current_ticker,
-                "Operational Pipeline Routing": f"NSE India {current_mode} Feed",
+            
+            # BULLETPROOF REPAIR: REMOVED RISK-HEAVY DICTIONARY PARSING AND REPLACED WITH STATIC METRICS
+            st.write(f"📈 **Target Asset Suffix Identifier:** {current_ticker}")
+            st.write(f"⚙️ **System Pipeline Routing:** NSE India {current_mode} Feed")
