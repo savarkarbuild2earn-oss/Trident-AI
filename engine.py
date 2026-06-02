@@ -11,7 +11,6 @@ def fetch_live_news_sentiment(stock_name):
     try:
         url = f"https://google.com{stock_name}+stock+market+india&hl=en-IN&gl=IN&ceid=IN:en"
         response = requests.get(url, timeout=2)
-        
         if response.status_code != 200:
             return "Neutral"
         
@@ -40,10 +39,9 @@ def fetch_live_news_sentiment(stock_name):
 
 def autonomous_whale_scanner():
     """
-    100% Comprehensive Market Scanner: Loops over our target market pool individually,
-    calculates precise tech levels, and maps out entry/exit points cleanly.
+    Hands-Free Engine: Processes market drivers and appends dedicated columns 
+    for Target Execution Windows and Recommended Holding Durations.
     """
-    # Our master operational pool containing the heavy market-moving drivers
     market_pool = [
         "RELIANCE.NS", "SBIN.NS", "TCS.NS", "HDFCBANK.NS", "INFY.NS", "ICICIBANK.NS",
         "ITC.NS", "LT.NS", "TATAMOTORS.NS", "BHARTIALRT.NS", "IRFC.NS", "IREDA.NS",
@@ -51,65 +49,90 @@ def autonomous_whale_scanner():
         "PFC.NS", "RECL.NS", "NHPC.NS", "GMRINFRA.NS", "TATAPOWER.NS", "ADANIPOWER.NS"
     ]
     
-    final_automated_feed = []
+    intraday_feed = []
+    long_term_feed = []
     
-    # Configure timezone structure for precise local Indian market synchronization
     ist_timezone = pytz.timezone('Asia/Kolkata')
     current_time_ist = datetime.now(ist_timezone).strftime("%I:%M:%S %p")
         
     for ticker in market_pool:
         try:
             stock = yf.Ticker(ticker)
-            # Individual 3-month daily history pull (Fast and 100% immune to bulk blocks)
-            df = stock.history(period="3mo", interval="1d")
+            df = stock.history(period="6mo", interval="1d")
             
-            if df.empty or len(df) < 20:
+            if df.empty or len(df) < 50:
                 continue
                 
             current_price = df['Close'].iloc[-1]
             clean_name = ticker.replace(".NS", "")
             
-            # Run fast quantitative indicator layers
             df['RSI'] = ta.momentum.rsi(df['Close'], window=14)
             df['SMA_20'] = df['Close'].rolling(window=20).mean()
+            df['SMA_50'] = df['Close'].rolling(window=50).mean()
             
             current_rsi = df['RSI'].fillna(50).iloc[-1]
             sma_20 = df['SMA_20'].fillna(current_price).iloc[-1]
+            sma_50 = df['SMA_50'].fillna(current_price).iloc[-1]
             
-            # Multi-Agent Scoring Grid
+            news_sentiment = fetch_live_news_sentiment(clean_name)
+            
             score = 0
             if current_price > sma_20: score += 40
             if 40 <= current_rsi <= 65: score += 30
-            
-            # Live News Sentiment Integration
-            news_sentiment = fetch_live_news_sentiment(clean_name)
             if news_sentiment == "Bullish": score += 30
-            elif news_sentiment == "Bearish": score -= 20
+            if news_sentiment == "Bearish": score -= 20
             
-            # Generate accurate direct labels and level margins
+            # 1. TIMED INTRADAY METRICS GENERATION
             if score >= 70:
-                signal = "🟢 ACCUMULATE (BUY)"
-                target_entry = f"₹{current_price:,.2f}"
-                target_exit = f"₹{current_price * 1.03:,.2f}"
+                intra_signal = "🟢 ACCUMULATE (BUY)"
+                intra_entry = f"₹{current_price:,.2f}"
+                intra_exit = f"₹{current_price * 1.025:,.2f}"
+                holding_period_intra = "⏰ Same Day (Exit before 3:15 PM IST)"
             elif score <= 35:
-                signal = "🔴 LIQUIDATE (SELL)"
-                target_entry = "Avoid Entry"
-                target_exit = f"₹{current_price * 0.98:,.2f}"
+                intra_signal = "🔴 LIQUIDATE (SELL)"
+                intra_entry = "Avoid Entry"
+                intra_exit = f"₹{current_price * 0.985:,.2f}"
+                holding_period_intra = "⚡ Immediate Action Required"
             else:
-                signal = "🟡 HOLD CONSOLIDATION"
-                target_entry = f"₹{current_price:,.2f}"
-                target_exit = f"₹{current_price * 1.01:,.2f}"
+                intra_signal = "🟡 CONSOLIDATION HOLD"
+                intra_entry = f"₹{current_price:,.2f}"
+                intra_exit = f"₹{current_price * 1.01:,.2f}"
+                holding_period_intra = "⏳ 1 to 3 Trading Sessions"
                 
-            final_automated_feed.append({
-                "⏰ Detection Time (IST)": current_time_ist,
-                "🔥 Active Stock": clean_name,
-                "💰 Current Value": f"₹{current_price:,.2f}",
-                "📊 Action Signal": signal,
-                "🟢 Target Entry Line": target_entry,
-                "🔴 Target Exit Line": target_exit,
-                "🧬 Scoring Index": int(score) # Cast to integer for a clean Streamlit metric look
+            intraday_feed.append({
+                "🔥 Stock Name": clean_name,
+                "💰 Live Value": f"₹{current_price:,.2f}",
+                "📊 Intraday Signal": intra_signal,
+                "🟢 Target Entry Line": intra_entry,
+                "🔴 Target Exit Line": intra_exit,
+                "⏱️ Target Window (IST)": "9:15 AM - 3:30 PM",
+                "⏳ Max Holding Period": holding_period_intra,
+                "🧬 Score": int(score)
             })
+            
+            # 2. TIMED LONG-TERM METRICS GENERATION
+            if current_price > sma_50 and news_sentiment != "Bearish":
+                long_outlook = "📈 STABLE COMPOUNDER"
+                long_action = "🟢 ACCUMULATE HOLD"
+                long_target = f"₹{current_price * 1.25:,.2f}"
+                holding_period_long = "💎 12 Months to 3+ Years"
+            else:
+                long_outlook = "📉 WEAK / RE-TESTING"
+                long_action = "🟡 WAIT / REDUCE SIZING"
+                long_target = "Await Macro Reversal"
+                holding_period_long = "❌ Cash Preservation Mode"
+                
+            long_term_feed.append({
+                "🔥 Stock Name": clean_name,
+                "💰 Market Value": f"₹{current_price:,.2f}",
+                "💎 Structural Outlook": long_outlook,
+                "📊 Strategic Action": long_action,
+                "🎯 Macro Target Exit Line": long_target,
+                "📅 Target Window": "Next 12-36 Months",
+                "🛡️ Safe Holding Period": holding_period_long
+            })
+            
         except Exception:
             continue
             
-    return pd.DataFrame(final_automated_feed)
+    return pd.DataFrame(intraday_feed), pd.DataFrame(long_term_feed)
