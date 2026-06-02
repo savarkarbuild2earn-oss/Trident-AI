@@ -9,7 +9,9 @@ def fetch_live_news_sentiment(stock_name):
     try:
         url = f"https://google.com{stock_name}+stock+market+india&hl=en-IN&gl=IN&ceid=IN:en"
         response = requests.get(url, timeout=5)
-        if response.status_style != 200:
+        
+        # CO-FOUNDER REPAIR: Fixed status_style typo to standard status_code
+        if response.status_code != 200:
             return "Neutral Tone - Parsing Delayed"
         
         root = ET.fromstring(response.content)
