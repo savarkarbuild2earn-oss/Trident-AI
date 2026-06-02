@@ -27,8 +27,8 @@ if 'portfolio' not in st.session_state:
 if 'active_ticker' not in st.session_state:
     st.session_state.active_ticker = None
 
-# Display Live Wallet Balance across the top of the app
-col_wallet, col_empty = st.columns()
+# Display Live Wallet Balance across the top of the app using 2 explicitly defined columns
+col_wallet, col_empty = st.columns(2)
 with col_wallet:
     st.metric(label="💰 Your Free Virtual Cash Balance", value=f"₹{st.session_state.virtual_wallet:,.2f}")
 
