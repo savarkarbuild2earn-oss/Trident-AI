@@ -72,7 +72,8 @@ def scan_stock(ticker, timeframe="Swing"):
             decision = f"🟢 BUY ({timeframe.upper()} CONFLUENCE EDGE)"
             explanation = f"Trident Engine Score: {score}/100. " + " ".join(reasons)
         elif 40 <= score < 75:
-            decision = f"实时 HOLD / WAIT FOR RALLY ENTRY"
+            # FIXED VISUAL TYPO HERE (REMOVED STRANGE TEXT CHARACTERS)
+            decision = f"🟡 HOLD / WAIT FOR RALLY ENTRY"
             explanation = f"Trident Engine Score: {score}/100. " + " ".join(reasons)
         else:
             decision = f"🔴 AVOID / SELL ({timeframe.upper()} BREAKDOWN)"
