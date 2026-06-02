@@ -7,22 +7,22 @@ from datetime import datetime
 import pytz
 
 def fetch_live_news_sentiment(stock_name):
-    """Bypasses paid APIs to scrape real-time financial news updates via RSS."""
+    """Bypasses paid APIs to scrape real-time financial news updates via Google News RSS."""
     try:
         url = f"https://google.com{stock_name}+stock+market+india&hl=en-IN&gl=IN&ceid=IN:en"
         response = requests.get(url, timeout=5)
         
         if response.status_code != 200:
-            return "Neutral Tone - Parsing Delayed"
+            return "Neutral"
         
         root = ET.fromstring(response.content)
         headlines = [item.find('title').text for item in root.findall('.//item')[:3]]
         
         if not headlines:
-            return "No recent news volatility registered."
+            return "Neutral"
             
-        positive_keywords = ['profit', 'surge', 'buy', 'order', 'growth', 'deal', 'gain', 'dividend']
-        negative_keywords = ['fall', 'loss', 'drop', 'slump', 'scam', 'probe', 'penalty', 'decline']
+        positive_keywords = ['profit', 'surge', 'buy', 'order', 'growth', 'deal', 'gain', 'dividend', 'win', 'bull']
+        negative_keywords = ['fall', 'loss', 'drop', 'slump', 'scam', 'probe', 'penalty', 'decline', 'bear']
         
         score = 0
         for headline in headlines:
@@ -32,19 +32,16 @@ def fetch_live_news_sentiment(stock_name):
             for n in negative_keywords:
                 if n in text: score -= 1
                 
-        if score > 0:
-            return f"🟢 Bullish News Catalyst"
-        elif score < 0:
-            return f"🔴 Bearish News Catalyst"
-        else:
-            return f"⚖️ Neutral News Sentiment"
+        if score > 0: return "Bullish"
+        elif score < 0: return "Bearish"
+        return "Neutral"
     except Exception:
-        return "News Pool Temporarily Offline"
+        return "Neutral"
 
 def autonomous_whale_scanner():
     """
-    100% Hands-Free Engine: Scans market drivers, extracts high-activity tokens,
-    and appends a precise Indian Standard Time (IST) execution stamp to every signal.
+    Hands-Free Engine: Scans high-activity drivers and computes exact minute-by-minute
+    Target Entry prices and Target Exit protection limits.
     """
     market_pool = [
         "RELIANCE.NS", "SBIN.NS", "TCS.NS", "HDFCBANK.NS", "INFY.NS", "ICICIBANK.NS",
@@ -58,7 +55,6 @@ def autonomous_whale_scanner():
     for ticker in market_pool:
         try:
             stock = yf.Ticker(ticker)
-            # Fetch 1-minute interval streams to capture real-time execution timing accurately
             df = stock.history(period="1d", interval="1m")
             if df.empty or len(df) < 5:
                 continue
@@ -101,34 +97,36 @@ def autonomous_whale_scanner():
             current_rsi = df['RSI'].fillna(50).iloc[-1]
             sma_20 = df['SMA_20'].fillna(current_price).iloc[-1]
             
-            live_news_vector = fetch_live_news_sentiment(clean_name)
+            news_sentiment = fetch_live_news_sentiment(clean_name)
             
             score = 0
             if current_price > sma_20: score += 40
             if 40 <= current_rsi <= 65: score += 30
-            if "🟢" in live_news_vector: score += 30
-            if "🔴" in live_news_vector: score -= 20
+            if news_sentiment == "Bullish": score += 30
+            if news_sentiment == "Bearish": score -= 20
             
-            # Formulate clear targets and actions based on the score matrix
+            # MATH FILTERS: Formulate clear targets and actions based on the score matrix
             if score >= 70:
-                signal = "🟢 BUY ACCUMULATE"
+                signal = "🟢 ACCUMULATE (BUY)"
                 target_entry = f"₹{current_price:,.2f}"
-                target_exit = f"₹{current_price * 1.02:,.2f} (Take Profit)"
+                # Take Profit Target at 2% gain line
+                target_exit = f"₹{current_price * 1.02:,.2f}"
             elif score <= 35:
-                signal = "🔴 LIQUIDATE / SELL"
+                signal = "🔴 LIQUIDATE (SELL)"
                 target_entry = "Avoid Entry"
-                target_exit = f"₹{current_price * 0.98:,.2f} (Stop Loss Trigger)"
+                # Stop Loss Risk Trigger at 1.5% protection margin
+                target_exit = f"₹{current_price * 0.985:,.2f}"
             else:
-                signal = "🟡 CONSOLIDATION HOLD"
-                target_entry = "Wait for Confluence"
+                signal = "🟡 HOLD CONSOLIDATION"
+                target_entry = f"₹{current_price:,.2f}"
                 target_exit = "Monitor Range"
                 
             final_automated_feed.append({
                 "⏰ Detection Time (IST)": current_time_ist,
                 "🔥 Active Stock": clean_name,
                 "💰 Current Value": f"₹{current_price:,.2f}",
-                "📊 Action Target": signal,
-                "🟢 Target Entry line": target_entry,
+                "📊 Action Signal": signal,
+                "🟢 Target Entry Line": target_entry,
                 "🔴 Target Exit Line": target_exit,
                 "🧬 Scoring Index": f"{score}/100"
             })
