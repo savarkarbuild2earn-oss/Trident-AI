@@ -135,15 +135,14 @@ if st.session_state.portfolio:
     share_msg = f"I am practicing my stock strategy metrics completely risk-free using Trident-AI! Check out the platform: {clean_url}"
     encoded_msg = urllib.parse.quote(share_msg)
     
-    # CLEAN, NATIVE STREAMLIT SHARE LINK BUTTONS (NO CRASH RISK)
     st.markdown("### 🚀 Invite Trading Communities & Share Records!")
-    st.write(f"🔗 **Your Share Link:** {clean_url}")
     
-    col_wa, col_tg = st.columns(2)
+    # SYSTEM UPGRADE: VISUAL EMBLEMS IN PLACE OF GENERIC BUTTON BLOCKS
+    col_wa, col_tg, col_empty = st.columns([1, 1, 4])
     with col_wa:
-        st.link_button("🟢 Share to WhatsApp Trading Groups", f"https://whatsapp.com{encoded_msg}")
+        st.link_button("💬 WhatsApp", f"https://whatsapp.com{encoded_msg}")
     with col_tg:
-        st.link_button("🔵 Post to Telegram Community Channels", f"https://t.me{clean_url}&text={urllib.parse.quote('Testing trades risk-free on Trident-AI!')}")
+        st.link_button("✈️ Telegram", f"https://t.me{clean_url}&text={urllib.parse.quote('Testing trades risk-free on Trident-AI!')}")
 
 st.markdown("---")
 st.caption(
