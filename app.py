@@ -1,8 +1,9 @@
 import streamlit as st
-# CO-FOUNDER REPAIR: Fixed import function name from autonomous_whale_scanner to autonomous_index_scanner
 from engine import analyze_user_position, optimize_capital_allocation, fetch_index_benchmarks, is_market_open, autonomous_index_scanner
 import yfinance as yf
 import urllib.parse
+from datetime import datetime
+import pytz
 
 # 1. ELITE PRODUCTION ENGINE WORKSPACE VIEWPORT CONFIGURATION
 st.set_page_config(page_title="Trident-AI Premium Live Terminal", layout="wide", initial_sidebar_state="collapsed")
@@ -49,7 +50,7 @@ st.markdown("""
                 <p style="margin: 4px 0 0 0; font-family: monospace; font-size: 13px; color: #a7f3d0; font-weight:bold;">[ STATUS: NIFTY & SENSEX LIVE SCANNERS ACTIVE // ALL RECONCILED STOCKS DEPLOYED ]</p>
             </div>
             <div style="background: rgba(255,255,255,0.2); color: white; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 700; border: 1px solid rgba(255,255,255,0.4);">
-                📡 1-HOUR COMPILER RUNNING
+                📡 ONCE DAILY AUTO-REFRESH
             </div>
         </div>
     </div>
@@ -70,13 +71,30 @@ with col_status:
 st.markdown("<br>", unsafe_allow_html=True)
 
 # ==============================================================================
-# INDEPENDENT AUTO-REFRESH MATRIX FRAGMENT (CALIBRATED TO EVERY 1 HOUR / 3600 SECONDS)
+# INDEPENDENT AUTO-REFRESH MATRIX FRAGMENT (CALIBRATED TO EXTRACT AT 09:15 AM ONLY)
 # ==============================================================================
-@st.fragment(run_every=3600)
+# The fragment loops every 60 seconds internally to run a silent check against the clock
+@st.fragment(run_every=60)
 def render_live_segmented_terminal():
-    with st.spinner("Processing Nifty & Sensex indices data streams safely..."):
-        # CO-FOUNDER REPAIR: Updated background calculation function name call
-        df_intra, df_long = autonomous_index_scanner()
+    # Sync with local Indian time streams
+    ist_tz = pytz.timezone('Asia/Kolkata')
+    now_time = datetime.now(ist_tz)
+    
+    # Check if this is the exact opening bell minute (09:15 AM)
+    is_opening_bell = (now_time.hour == 9 and now_time.minute == 15)
+    
+    # Initialize cache container memory if it doesn't exist yet upon app bootup
+    if 'cached_df_intra' not in st.session_state or 'cached_df_long' not in st.session_state:
+        with st.spinner("Initializing daily baseline stock market matrices..."):
+            st.session_state.cached_df_intra, st.session_state.cached_df_long = autonomous_index_scanner()
+            
+    # FORCE AUTOMATED RE-SCAN ENTIRELY ONLY AT MARKET OPEN TIME (ONE TIME PER DAY)
+    if is_opening_bell:
+        st.session_state.cached_df_intra, st.session_state.cached_df_long = autonomous_index_scanner()
+        st.toast("🔔 Opening bell triggered! Automated daily re-scan completed successfully.")
+
+    df_intra = st.session_state.cached_df_intra
+    df_long = st.session_state.cached_df_long
 
     if df_intra.empty or df_long.empty:
         st.warning("Synchronizing cloud pipeline stream feeds. Re-running asset calculation scanner loop automatically...")
@@ -141,11 +159,11 @@ def render_live_segmented_terminal():
         "*   **Bakri Id (Id-Ul-Zuha)**: Wednesday, June 17, 2026\n"
         "*   **Independence Day**: Saturday, August 15, 2026\n"
         "*   **Mahatma Gandhi Jayanti**: Friday, October 02, 2026\n"
-        "*   **Diwali (Laxmi Puja)**: Sunday, November 08, 2026 *(Special 1-Hour Muhurat Trading session in evening)*\n"
+        "*   **Diwali (Laxmi Puja)**: Sunday, November 08, 2026 *(Special 1-Hour Muhurat Trading session will open in evening)*\n"
         "*   **Gurunanak Jayanti**: Monday, November 23, 2026\n"
         "*   **Christmas**: Friday, December 25, 2026"
     )
-    st.caption("Workspace updated. Next automatic data refresh pipeline trigger in 1 hour.")
+    st.caption("Workspace operational. Next automatic pipeline re-scan triggers precisely at 09:15 AM IST.")
 
 # Launch the live "Mint Prosperity" light terminal canvas loop
 render_live_segmented_terminal()
