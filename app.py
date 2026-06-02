@@ -35,16 +35,42 @@ col_wallet, col_empty_space = st.columns(2)
 with col_wallet:
     st.metric(label="💰 Your Free Virtual Cash Balance", value=f"₹{st.session_state.virtual_wallet:,.2f}")
 
+# ==============================================================================
+# SYSTEM DROPDOWN DICTIONARY (Nifty 50 + Key Mid/Small-Caps)
+# ==============================================================================
+stock_dictionary = {
+    "Reliance Industries (RELIANCE)": "RELIANCE.NS",
+    "State Bank of India (SBIN)": "SBIN.NS",
+    "Tata Consultancy Services (TCS)": "TCS.NS",
+    "HDFC Bank (HDFCBANK)": "HDFCBANK.NS",
+    "Infosys (INFY)": "INFY.NS",
+    "ICICI Bank (ICICIBANK)": "ICICIBANK.NS",
+    "ITC Limited (ITC)": "ITC.NS",
+    "Larsen & Toubro (LT)": "LT.NS",
+    "Tata Motors (TATAMOTORS)": "TATAMOTORS.NS",
+    "Bharti Airtel (BHARTIALRT)": "BHARTIALRT.NS",
+    "Adani Ports (ADANIPORTS)": "ADANIPORTS.NS",
+    "NTPC Limited (NTPC)": "NTPC.NS",
+    "Power Grid Corporation (POWERGRID)": "POWERGRID.NS",
+    "Oil & Natural Gas Corp (ONGC)": "ONGC.NS",
+    "Coal India (COALINDIA)": "COALINDIA.NS",
+    "Indian Railway Finance Corp (IRFC)": "IRFC.NS",
+    "Indian Renewable Energy Dev Agency (IREDA)": "IREDA.NS",
+    "Suzlon Energy (SUZLON)": "SUZLON.NS",
+    "Zomato Limited (ZOMATO)": "ZOMATO.NS",
+    "Tata Steel (TATASTEEL)": "TATASTEEL.NS",
+    "Jio Financial Services (JIOFIN)": "JIOFIN.NS"
+}
+
 # SYSTEM CONTROLS SPLIT CARD RENDER
 col_inputs, col_timeframe = st.columns(2)
 with col_inputs:
-    ticker_input = st.text_input("Enter NSE Stock Ticker Symbol:", "SBIN")
+    # REPLACED TEXT INPUT WITH THE SEARCHABLE SELECTBOX LIST
+    selected_stock_label = st.selectbox("Select Target NSE Stock from List:", list(stock_dictionary.keys()))
+    formatted_ticker = stock_dictionary[selected_stock_label]
 with col_timeframe:
     strategy_select = st.selectbox("Select Target Strategy Window Execution:", ["Swing / Long-Term Investing", "Intraday Trading Momentum"])
 
-# Clean formatting triggers
-cleaned_input = ticker_input.strip().upper()
-formatted_ticker = f"{cleaned_input}.NS" if ".NS" not in cleaned_input else cleaned_input
 chosen_mode = "Intraday" if "Intraday" in strategy_select else "Swing"
 
 if st.button("Run Advanced Multi-Agent AI Diagnostics"):
@@ -75,18 +101,13 @@ if st.session_state.active_ticker:
         
         with beginner_tab:
             st.header(f"Strategy Routing: {result['decision']}")
-            
-            # VISUAL INDEX BLOCK
             st.write(f"**Trident Confluence Calculation Metric Index:** {result['raw_score']}/100")
             st.progress(result['raw_score'] / 100)
             
-            # ==============================================================================
-            # CO-FOUNDER UPGRADE: AUTOMATED INTERACTIVE ONBOARDING DICTIONARY
-            # ==============================================================================
             st.markdown("### 📘 How to Read Your Algorithmic Score:")
             if result['raw_score'] >= 75:
                 st.success("🔥 **Score 75-100 (High Confluence Edge):** All our independent math models agree. The stock is in a healthy upward trend, showing strong buying volume, and is technically safe from sudden manipulation cascades.")
-            elif 40 <= result['raw_score'] < 75:
+            elif 40 <= result['raw_score'] < 74:
                 st.warning("⚖️ **Score 40-74 (Mixed Market Conditions):** The indicators are split. The trend might be turning sideways, or big institutions are waiting. It is smarter to hold your position or wait for a clear breakout pattern.")
             else:
                 st.error("🚨 **Score 0-39 (High Markdown/Distribution Risk):** Serious technical decay. Selling pressure is dominating the order books. Complete beginners should strictly avoid entering at this price line.")
@@ -151,7 +172,7 @@ if st.session_state.portfolio:
     
     st.markdown("### 🚀 Invite Trading Communities & Share Records!")
     
-    col_wa, col_tg, col_empty = st.columns()
+    col_wa, col_tg, col_empty = st.columns(3)
     with col_wa:
         st.link_button("💬 WhatsApp", f"https://whatsapp.com{encoded_msg}")
     with col_tg:
@@ -161,5 +182,3 @@ st.markdown("---")
 st.caption(
     "🔒 **Regulatory Compliance Note:** Trident-AI is an independent, non-commercial software architecture "
     "built for simulation, learning, and software prototyping. We are not registered with SEBI. By interacting with "
-    "this dashboard, you acknowledge that no financial advice is being administered."
-)
