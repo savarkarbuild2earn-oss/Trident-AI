@@ -203,7 +203,17 @@ if st.session_state.active_ticker:
             st.write(f"**Trident Confluence Index Score:** {result['raw_score']}/100")
             st.progress(result['raw_score'] / 100)
             
-            # FIXED INDENTATION SPACING LOOPS HERE
-            if result['raw_score'] >= 75:
-                st.markdown("<div style='background:rgba(16,185,129,0.1); color:#34d399; padding:15px; border-radius:8px; border:1px solid rgba(16,185,129,0.2); font-size:14px; margin-bottom:20px;'><strong>🔥 CONFLUENCE RATING CRITICAL:</strong> Multiple tracking agents have mapped out strong buyer support structures with minimal distribution trends. Setup matches institutional criteria.</div>", unsafe_allow_html=True)
-            elif 40 <= result['raw_score'] < 74:
+            st.markdown("<br>", unsafe_allow_html=True)
+            col_metric_1, col_metric_2 = st.columns(2)
+            with col_metric_1:
+                st.metric(label=f"LAST TRADE VALUE ({current_mode})", value=f"₹{result['price']}")
+            with col_metric_2:
+                st.info(f"**System Diagnostic Logic Breakdown:** {result['explanation']}")
+            
+            st.markdown("<br><h4 style='color:white; margin-bottom:10px;'>📊 DYNAMIC HISTORICAL CHART INTERFACES</h4>", unsafe_allow_html=True)
+            stock_data = yf.Ticker(current_ticker).history(period="1mo" if current_mode == "Intraday" else "3mo")
+            st.line_chart(stock_data['Close'])
+            st.markdown('</div>', unsafe_allow_html=True)
+            
+        with pro_tab:
+            st.markdown('<div class="quant-panel">', unsafe_allow_html=True)
