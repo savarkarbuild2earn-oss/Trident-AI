@@ -5,114 +5,109 @@ import urllib.parse
 
 # 1. VISUAL ENGINE LAYOUT CONFIGURATION
 st.set_page_config(
-    page_title="🔱 TRIDENT-AI // Institutional Quant Terminal", 
+    page_title="🔱 TRIDENT-AI // Live Stock Analytics Terminal", 
     layout="wide", 
     initial_sidebar_state="collapsed"
 )
 
-# 2. CYBERPUNK GLASSMORPHISM INFRASTRUCTURE
+# 2. DYNAMIC FINANCIAL BLUEPRINT DESIGN INJECTIONS
 st.markdown("""
     <style>
-    /* Global Canvas Dark Mode Override */
+    /* Global Canvas Institutional Refresh */
     .stApp {
-        background-color: #030712 !important;
-        background-image: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #030712 70%) !important;
-        color: #f3f4f6 !important;
-        font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        background-color: #f8fafc !important;
+        background-image: linear-gradient(180deg, #eff6ff 0%, #f8fafc 100%) !important;
+        color: #1e293b !important;
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
     }
     
-    /* Neon Frosted Glassmorphism Containers */
-    .quant-panel {
-        background: rgba(17, 24, 39, 0.7) !important;
-        backdrop-filter: blur(16px) saturate(180%) !important;
-        -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
-        border: 1px solid rgba(255, 255, 255, 0.08) !important;
-        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4) !important;
-        border-radius: 16px !important;
+    /* Institutional Premium Trading Cards */
+    .trade-panel {
+        background: #ffffff !important;
+        border: 1px solid #e2e8f0 !important;
+        box-shadow: 0 4px 15px 0 rgba(148, 163, 184, 0.1) !important;
+        border-radius: 12px !important;
         padding: 24px !important;
         margin-bottom: 24px !important;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: all 0.2s ease-in-out;
     }
-    .quant-panel:hover {
-        border-color: rgba(99, 102, 241, 0.4) !important;
-        box-shadow: 0 12px 40px 0 rgba(99, 102, 241, 0.15) !important;
-        transform: translateY(-2px);
+    .trade-panel:hover {
+        box-shadow: 0 10px 25px 0 rgba(148, 163, 184, 0.2) !important;
+        border-color: #cbd5e1 !important;
     }
     
-    /* Sleek Institutional Metric Font Typography */
+    /* Premium Financial Typography */
     div[data-testid="stMetricValue"] {
-        font-size: 36px !important;
+        font-size: 38px !important;
         font-weight: 800 !important;
-        color: #6366f1 !important;
+        color: #0f172a !important;
         letter-spacing: -1px;
-        text-shadow: 0 0 12px rgba(99, 102, 241, 0.4);
     }
     
-    /* Hyper-Premium Glowing Tactical Execution Control */
+    /* High-Contrast Interactive Execution Controller */
     .stButton>button {
-        background: linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%) !important;
+        background: linear-gradient(135deg, #059669 0%, #10b981 100%) !important;
         color: #ffffff !important;
         font-weight: 700 !important;
-        font-size: 16px !important;
-        letter-spacing: 0.5px !important;
+        font-size: 15px !important;
         border: none !important;
-        padding: 16px 32px !important;
-        border-radius: 12px !important;
-        box-shadow: 0 4px 20px rgba(79, 70, 229, 0.4) !important;
-        transition: all 0.2s ease-in-out !important;
+        padding: 14px 28px !important;
+        border-radius: 8px !important;
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2) !important;
+        transition: all 0.2s ease !important;
         width: 100%;
         text-transform: uppercase;
     }
     .stButton>button:hover {
-        box-shadow: 0 0 30px rgba(79, 70, 229, 0.7) !important;
+        box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35) !important;
         transform: translateY(-1px);
     }
     
-    /* Custom Stylings for Selectboxes and System Tabs */
+    /* Custom Stylings for System Input Boxes & Navigation Elements */
     .stSelectbox div[data-baseweb="select"] {
-        background-color: rgba(255, 255, 255, 0.04) !important;
-        border: 1px solid rgba(255, 255, 255, 0.1) !important;
-        border-radius: 8px !important;
+        background-color: #ffffff !important;
+        border: 1px solid #cbd5e1 !important;
+        border-radius: 6px !important;
     }
     button[data-baseweb="tab"] {
         font-size: 14px !important;
         font-weight: 600 !important;
-        color: #9ca3af !important;
+        color: #64748b !important;
         padding: 12px 24px !important;
     }
     button[data-baseweb="tab"][aria-selected="true"] {
-        color: #6366f1 !important;
-        border-bottom-color: #6366f1 !important;
+        color: #059669 !important;
+        border-bottom-color: #059669 !important;
     }
     </style>
 """, unsafe_allow_html=True)
 
-# 3. HIGH-END CYBER FINTECH HEADER HERO CARD
+# 3. PREMIUM BULL RUN HEADER BANNER
 st.markdown("""
-    <div class="quant-panel" style="border-left: 6px solid #6366f1; background: linear-gradient(90deg, rgba(79,70,229,0.1) 0%, rgba(17,24,39,0.7) 100%) !important;">
+    <div class="trade-panel" style="border-left: 6px solid #10b981; background: linear-gradient(90deg, rgba(16,185,129,0.06) 0%, #ffffff 100%) !important;">
         <div style="display: flex; justify-content: space-between; align-items: center;">
             <div>
-                <h1 style="color:#ffffff; margin:0; font-size:36px; font-weight:900; letter-spacing:-1px;">🔱 TRIDENT-AI</h1>
-                <p style="color:#9ca3af; margin:4px 0 0 0; font-family:monospace; font-size:13px; letter-spacing:1px;">⚡ [ ALGORITHMIC DATA ENGINE CORE v2.5 ]</p>
+                <h1 style="color:#0f172a; margin:0; font-size:32px; font-weight:900; letter-spacing:-1px;">🔱 TRIDENT-AI</h1>
+                <p style="color:#64748b; margin:2px 0 0 0; font-family:monospace; font-size:12px; font-weight:bold; letter-spacing:0.5px;">📈 [ LIVE STOCK MARKET ANALYTICS SANDBOX v2.5 ]</p>
             </div>
             <div style="text-align: right;">
-                <span style="background: rgba(99,102,241,0.2); color: #a5b4fc; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; border: 1px solid rgba(99,102,241,0.3);">🟢 EXCHANGE DATA LIVE</span>
+                <span style="background: rgba(16,185,129,0.15); color: #065f46; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 700; border: 1px solid rgba(16,185,129,0.3);">🟢 NSE LIVE POOL CONNECTED</span>
             </div>
         </div>
     </div>
 """, unsafe_allow_html=True)
 
-# SEBI REGULATORY COMPLIANCE SYSTEM GUARD
+# SEBI REGULATORY COMPLIANCE BANNER
 with st.expander("⚖️ SECURE LEGAL ARCHITECTURE DIRECTIVE & SEBI COMPLIANCE SHIELD", expanded=False):
     st.markdown("""
-        <div style="font-size:12px; color:#9ca3af; line-height:1.6; padding:10px; background: rgba(0,0,0,0.2); border-radius:8px;">
+        <div style="font-size:12px; color:#475569; line-height:1.6; padding:10px; background: #f1f5f9; border-radius:6px; border-left:3px solid #64748b;">
             <strong>MANDATORY STATUTORY WARNING:</strong> We are <strong>NOT</strong> registered with SEBI as an investment advisor or research analyst. 
             This quantitative suite operations engine functions entirely as a decentralized, non-commercial software calculation simulator for educational modeling purposes. 
             No financial advice is given, and past metrics hold zero validation toward prospective price curves. Always protect capital through certified wealth advisors.
         </div>
     """, unsafe_allow_html=True)
 
-# Session Allocation Initializations
+# Initialize Session Engine States
 if 'virtual_wallet' not in st.session_state:
     st.session_state.virtual_wallet = 1000000.00
 if 'portfolio' not in st.session_state:
@@ -124,16 +119,16 @@ if 'active_strategy' not in st.session_state:
 
 st.markdown("<br>", unsafe_allow_html=True)
 
-# TOP ROW: SECURE SANDBOX BALANCES CARD
+# BALANCE SHEET BANNER CARD
 col_balance_card, col_spacing = st.columns(2)
 with col_balance_card:
-    st.markdown('<div class="quant-panel" style="padding: 16px 24px !important;">', unsafe_allow_html=True)
-    st.metric(label="💰 SANDBOX SIMULATION LEDGER", value=f"₹{st.session_state.virtual_wallet:,.2f}")
+    st.markdown('<div class="trade-panel" style="padding: 14px 20px !important; background:#ffffff;">', unsafe_allow_html=True)
+    st.metric(label="💰 PRACTICE SANDBOX WALLET BALANCE", value=f"₹{st.session_state.virtual_wallet:,.2f}")
     st.markdown('</div>', unsafe_allow_html=True)
 
-# CENTRAL OPERATION: CONTROL PARAMETERS
-st.markdown('<div class="quant-panel">', unsafe_allow_html=True)
-st.markdown("<h3 style='color:white; margin-top:0; margin-bottom:15px; font-size:18px;'>⚙️ CONFIGURATION ENGINE RADAR</h3>", unsafe_allow_html=True)
+# CENTRAL OPERATION CONTROL PANEL
+st.markdown('<div class="trade-panel">', unsafe_allow_html=True)
+st.markdown("<h3 style='color:#0f172a; margin-top:0; margin-bottom:15px; font-size:18px; font-weight:800;'>📊 ASSET AND HORIZON MATRIX</h3>", unsafe_allow_html=True)
 col_inputs, col_timeframe = st.columns(2)
 
 stock_dictionary = {
@@ -161,20 +156,20 @@ stock_dictionary = {
 }
 
 with col_inputs:
-    selected_stock_label = st.selectbox("📊 SELECT TARGET NSE STOCK MATRIX:", list(stock_dictionary.keys()))
+    selected_stock_label = st.selectbox("🎯 SELECT NSE MARKET TICKER:", list(stock_dictionary.keys()))
     formatted_ticker = stock_dictionary[selected_stock_label]
 with col_timeframe:
-    strategy_select = st.selectbox("⚡ SELECT MOMENTUM HORIZON EXECUTION:", ["Swing / Long-Term Investing", "Intraday Trading Momentum"])
+    strategy_select = st.selectbox("⚙️ SCANNING STRATEGY CHANNEL:", ["Swing / Long-Term Investing", "Intraday Trading Momentum"])
 
 chosen_mode = "Intraday" if "Intraday" in strategy_select else "Swing"
 
 st.markdown("<br>", unsafe_allow_html=True)
-if st.button("🚀 INITIALIZE DUAL-HORIZON DIAGNOSTIC LOOP"):
+if st.button("⚡ EXECUTE MULTI-AGENT SCAN LOOP"):
     st.session_state.active_ticker = formatted_ticker
     st.session_state.active_strategy = chosen_mode
 st.markdown('</div>', unsafe_allow_html=True)
 
-# ANALYSIS OUTPUT GRID
+# DYNAMIC RADAR OUTPUT GRID
 if st.session_state.active_ticker:
     current_ticker = st.session_state.active_ticker
     current_mode = st.session_state.active_strategy
@@ -182,38 +177,33 @@ if st.session_state.active_ticker:
     result = scan_stock(current_ticker, current_mode)
     
     if result is None:
-        st.error("System Core Interrupted: Price stream connection timed out. Please retry.")
+        st.error("System Error: Market data loop interrupted. Please re-run selection.")
         st.session_state.active_ticker = None
     elif result["status"] == "BLOCKED":
-        st.error(f"⚠️ Security Shield Lockout: {result['reason']}")
+        st.error(f"⚠️ Risk Guard Triggered: {result['reason']}")
         st.session_state.active_ticker = None
     elif result["status"] == "SUCCESS":
         
         beginner_tab, pro_tab, paper_trade_tab, leaderboard_tab = st.tabs([
-            "🟢 STRATEGY BIAS SCANNER", 
-            "🔵 INSTITUTIONAL CONFLUENCE", 
-            "🎮 SANDBOX ORDER ROUTER",
-            "🏆 GLOBAL SYSTEM LEADERBOARD"
+            "🟢 STRATEGY DIRECTIONAL BIAS", 
+            "🔵 INSTITUTIONAL METRICS", 
+            "🎮 SIMULATED ORDER ROUTER",
+            "🏆 SYSTEM CHALLENGE LEADERBOARD"
         ])
         
+        # DYNAMIC HIGHLIGHTS BASED ON SYSTEM SCORING (EMERALD BULL vs CRIMSON BEAR)
+        panel_border_color = "#10b981" if result['raw_score'] >= 50 else "#ef4444"
+        panel_gradient_bg = "rgba(16,185,129,0.02)" if result['raw_score'] >= 50 else "rgba(239,68,68,0.02)"
+        
         with beginner_tab:
-            st.markdown('<div class="quant-panel">', unsafe_allow_html=True)
-            st.markdown(f"<h2 style='color:#ffffff; font-weight:700; font-size:22px; margin-top:0;'>Bias Analysis Direction: {result['decision']}</h2>", unsafe_allow_html=True)
+            st.markdown(f'<div class="trade-panel" style="border-top: 4px solid {panel_border_color}; background: {panel_gradient_bg} !important;">', unsafe_allow_html=True)
+            st.markdown(f"<h2 style='color:#0f172a; font-weight:800; font-size:22px; margin-top:0;'>Diagnostic Output: {result['decision']}</h2>", unsafe_allow_html=True)
             
-            st.write(f"**Trident Confluence Index Score:** {result['raw_score']}/100")
+            st.write(f"**Trident Mathematical Weight Confluence Index:** {result['raw_score']}/100")
             st.progress(result['raw_score'] / 100)
             
-            st.markdown("<br>", unsafe_allow_html=True)
-            col_metric_1, col_metric_2 = st.columns(2)
-            with col_metric_1:
-                st.metric(label=f"LAST TRADE VALUE ({current_mode})", value=f"₹{result['price']}")
-            with col_metric_2:
-                st.info(f"**System Diagnostic Logic Breakdown:** {result['explanation']}")
-            
-            st.markdown("<br><h4 style='color:white; margin-bottom:10px;'>📊 DYNAMIC HISTORICAL CHART INTERFACES</h4>", unsafe_allow_html=True)
-            stock_data = yf.Ticker(current_ticker).history(period="1mo" if current_mode == "Intraday" else "3mo")
-            st.line_chart(stock_data['Close'])
-            st.markdown('</div>', unsafe_allow_html=True)
-            
-        with pro_tab:
-            st.markdown('<div class="quant-panel">', unsafe_allow_html=True)
+            if result['raw_score'] >= 75:
+                st.markdown("<div style='background:#ecfdf5; color:#065f46; padding:15px; border-radius:8px; border:1px solid #a7f3d0; font-size:14px; margin-bottom:20px; font-weight:500;'>🔥 BULLISH SETUP VERIFIED: Technical indicators show strong asset accumulation with multi-agent trend alignment. Low near-term downside variance.</div>", unsafe_allow_html=True)
+            elif 40 <= result['raw_score'] < 74:
+                st.markdown("<div style='background:#fffbeb; color:#92400e; padding:15px; border-radius:8px; border:1px solid #fde68a; font-size:14px; margin-bottom:20px; font-weight:500;'>⚖️ NEUTRAL DISTRIBUTION DRIFT: Split indicator structures. Market vectors shifting sideways awaiting volume breakouts. Sizing defense recommended.</div>", unsafe_allow_html=True)
+            else:
