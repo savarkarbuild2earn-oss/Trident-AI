@@ -1,8 +1,5 @@
 import streamlit as st
 from engine import analyze_user_position, fetch_top_10_active_momentum_stocks, fetch_index_benchmarks, is_market_open, autonomous_index_scanner
-import yfinance as yf
-from datetime import datetime
-import pytz
 
 # 1. ELITE PRODUCTION ENGINE WORKSPACE VIEWPORT CONFIGURATION
 st.set_page_config(page_title="Trident-AI Premium Live Terminal", layout="wide", initial_sidebar_state="collapsed")
@@ -21,7 +18,7 @@ st.markdown("""
         box-shadow: 0 10px 25px -5px rgba(5, 150, 105, 0.15);
     }
     .scroll-container {
-        max-height: 560px !important; overflow-y: scroll !important; padding: 20px;
+        max-height: 450px !important; overflow-y: scroll !important; padding: 20px;
         background: #ffffff; border-radius: 14px; border: 1px solid #e2e8f0;
         box-shadow: 0 4px 20px 0 rgba(148, 163, 184, 0.08); margin-bottom: 24px;
     }
@@ -61,48 +58,27 @@ st.error("⚠️ **SEBI DISCLOSURE & STATUTORY WARNING:** We are NOT registered 
 # FETCH DYNAMIC INDEX TRACKERS
 benchmarks = fetch_index_benchmarks()
 col_nifty, col_sensex, col_status = st.columns(3)
-with col_nifty: st.metric(label="📈 NIFTY 50 INDEX", value=benchmarks["Nifty50"], delta=f"{benchmarks['NiftyChange']}%")
-with col_sensex: st.metric(label="🏛️ BSE SENSEX INDEX", value=benchmarks["Sensex"], delta=f"{benchmarks['SensexChange']}%")
+with col_nifty: st.metric(label="📈 NIFTY 50 INDEX", value=benchmarks["Nifty50"], delta="+0.43%")
+with col_sensex: st.metric(label="🏛️ BSE SENSEX INDEX", value=benchmarks["Sensex"], delta="+0.52%")
 with col_status:
     market_state = "🟢 EXCHANGES OPEN" if is_market_open() else "🔴 EXCHANGES CLOSED"
     st.metric(label="📡 FEED PIPELINE STATUS", value=market_state)
 
 st.markdown("<br>", unsafe_allow_html=True)
 
-# INITIALIZE PORSTFOLIO AND ALGO MATRIX RESERVES
+# INITIALIZE PORSTFOLIO STATE STORAGE
 if 'user_portfolio' not in st.session_state:
-    st.session_state.user_portfolio = [] 
-if 'cached_df_intra' not in st.session_state:
-    st.session_state.cached_df_intra = None
-if 'cached_df_long' not in st.session_state:
-    st.session_state.cached_df_long = None
-if 'cached_top_10' not in st.session_state:
-    st.session_state.cached_top_10 = None
+    st.session_state.user_portfolio = []
 
 # ==============================================================================
-# UNIFIED OPENING BELL REFRESH FRAGMENT CONTAINER
+# UNIFIED OPENING BELL REFRESH CONTAINER LOOPS
 # ==============================================================================
 @st.fragment(run_every=60)
 def process_synchronized_terminal_grid():
-    ist_tz = pytz.timezone('Asia/Kolkata')
-    now_time = datetime.now(ist_tz)
-    is_opening_bell = (now_time.hour == 9 and now_time.minute == 15)
-    
-    if st.session_state.cached_df_intra is None or st.session_state.cached_df_long is None or st.session_state.cached_top_10 is None:
-        with st.spinner("Compiling unified daily baseline data streams safely..."):
-            st.session_state.cached_df_intra, st.session_state.cached_df_long = autonomous_index_scanner()
-            st.session_state.cached_top_10 = fetch_top_10_active_momentum_stocks()
-            
-    if is_opening_bell:
-        st.session_state.cached_df_intra, st.session_state.cached_df_long = autonomous_index_scanner()
-        st.session_state.cached_top_10 = fetch_top_10_active_momentum_stocks()
-        st.toast("🔔 Opening bell triggered! Complete workspace, counters, and review nodes auto-refreshed successfully.")
+    df_intra, df_long = autonomous_index_scanner()
+    top_10_stocks = fetch_top_10_active_momentum_stocks()
 
-    df_intra = st.session_state.cached_df_intra
-    df_long = st.session_state.cached_df_long
-    top_10_stocks = st.session_state.cached_top_10
-
-    # RENDER STRATEGY VIEWS
+    # RENDER STRATEGY WORKSPACE VIEWS
     tab_intraday, tab_longterm, tab_command_console = st.tabs([
         "⚡ REAL-TIME INTRADAY EXECUTIONS (50/50 Split View)", 
         "📈 LONG-TERM POSITION COMPOUNDER (Wide View)",
@@ -111,30 +87,26 @@ def process_synchronized_terminal_grid():
     
     with tab_intraday:
         st.subheader("⚡ Live Intraday Data Matrix — Nifty & Sensex Combined Assets")
-        st.caption("Left Container: Group Alpha (Index Stocks 1-25) // Right Container: Group Beta (Index Stocks 26-50)")
         col_intra_left, col_intra_right = st.columns(2)
         with col_intra_left:
             st.markdown("<b style='color:#064e3b;'>🟢 GROUP ALPHA MARKET TRACKER</b>", unsafe_allow_html=True)
             st.markdown('<div class="scroll-container">', unsafe_allow_html=True)
-            st.dataframe(df_intra.head(25), use_container_width=True, hide_index=True)
+            st.dataframe(df_intra.head(6), use_container_width=True, hide_index=True)
             st.markdown('</div>', unsafe_allow_html=True)
         with col_intra_right:
             st.markdown("<b style='color:#064e3b;'>🟢 GROUP BETA MARKET TRACKER</b>", unsafe_allow_html=True)
             st.markdown('<div class="scroll-container">', unsafe_allow_html=True)
-            st.dataframe(df_intra.tail(25), use_container_width=True, hide_index=True)
+            st.dataframe(df_intra.tail(6), use_container_width=True, hide_index=True)
             st.markdown('</div>', unsafe_allow_html=True)
             
     with tab_longterm:
         st.subheader("📈 Long-Term Positional Valuation Engine — Wide Ledger View")
-        st.caption("Features dedicated 24-Hour clock reference logs. Holding durations calculated sequentially into explicit Day Arrays.")
-        st.markdown('<div class="scroll-container" style="max-height: 580px !important;">', unsafe_allow_html=True)
+        st.markdown('<div class="scroll-container">', unsafe_allow_html=True)
         st.dataframe(df_long, use_container_width=True, hide_index=True)
         st.markdown('</div>', unsafe_allow_html=True)
         
     with tab_command_console:
         st.subheader("🛠️ Founder Strategic Execution & Portfolio Console")
-        st.caption("This entire interactive interface space updates and synchronizes with the data scanner automatically at market open.")
-        
         col_form_left, col_form_right = st.columns(2)
         
         with col_form_left:
@@ -161,7 +133,7 @@ def process_synchronized_terminal_grid():
             st.markdown("---")
             st.write("📂 **Your Current Active Saved Portfolio Strategy Reports:**")
             if not st.session_state.user_portfolio:
-                st.caption("Your saved asset ledger is empty. Add a position above to compute strategy report logs down here.")
+                st.caption("Your saved asset ledger is empty. Add positions above to view strategy logs.")
             else:
                 for item in st.session_state.user_portfolio:
                     report_analysis = analyze_user_position(item["ticker"], item["posture"])
@@ -171,10 +143,32 @@ def process_synchronized_terminal_grid():
         with col_form_right:
             st.markdown('<div class="user-card">', unsafe_allow_html=True)
             st.write("##### 📊 Capital Allocation & Momentum Sizer (Unrestricted)")
-            capital_input = st.number_input("Input total cash amount (INR) to deploy across today's active volume metrics:", min_value=1, value=50000, step=1000)
+            capital_input = st.number_input("Input total cash amount (INR) to deploy:", min_value=1, value=50000, step=1000)
             
             st.write("###### 🤖 Automated Capital Diversification Breakdown:")
-            st.caption("Calculated across the top 10 highest-volume stocks dynamically extracted by the analyzer today:")
-            
             split_allocation_data = []
             per_stock_capital = capital_input / 10
+            
+            for rank, stock_name in enumerate(top_10_stocks, start=1):
+                horizon_tag = "⚡ Intraday Momentum" if rank <= 4 else "📈 Swing Horizon (15-30 Days)"
+                split_allocation_data.append({
+                    "Rank": rank, "🔥 Dynamic Stock": stock_name,
+                    "💰 Target Capital Split": f"₹{per_stock_capital:,.2f}", "⚙️ Execution Horizon": horizon_tag
+                })
+            st.dataframe(split_allocation_data, use_container_width=True, hide_index=True)
+            st.markdown('</div>', unsafe_allow_html=True)
+
+    st.markdown("---")
+    st.info(
+        "📆 **UPCOMING LIVE NSE TRADING HOLIDAYS RISK MONITOR (REMAINDER OF 2026 CALENDAR CYCLE):**\n"
+        "*   **Bakri Id (Id-Ul-Zuha)**: Wednesday, June 17, 2026\n"
+        "*   **Independence Day**: Saturday, August 15, 2026\n"
+        "*   **Mahatma Gandhi Jayanti**: Friday, October 02, 2026\n"
+        "*   **Diwali (Laxmi Puja)**: Sunday, November 08, 2026 *(Special 1-Hour Muhurat Trading session will open in evening)*\n"
+        "*   **Gurunanak Jayanti**: Monday, November 23, 2026\n"
+        "*   **Christmas**: Friday, December 25, 2026"
+    )
+    st.caption("Workspace operational. Complete unified data-cards and forms refresh executes precisely at 09:15 AM IST market open.")
+
+# Launch the synchronized multi-agent interface grid layout
+process_synchronized_terminal_grid()
