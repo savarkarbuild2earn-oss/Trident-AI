@@ -213,7 +213,7 @@ if st.session_state.active_ticker:
         with pro_tab:
             st.markdown('<div class="trade-panel">', unsafe_allow_html=True)
             st.markdown("<h3 style='color:#0f172a; font-weight:800; margin-top:0;'>📊 Quantitative Metric Stream Matrix</h3>", unsafe_allow_html=True)
+            # CO-FOUNDER REPAIR: SECURELY BALANCED JSON BRACKETS HERE
             st.json({
                 "Target Asset Ticker Key": current_ticker,
                 "Operational Pipeline Routing": f"NSE India {current_mode} Feed",
-                "Algorithmic Unified Index Score": result['raw_score'],
