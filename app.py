@@ -1,10 +1,9 @@
 import streamlit as st
 from engine import autonomous_whale_scanner
 
-# Configure premium dynamic layout architecture
-st.set_page_config(page_title="Trident-AI Live Quant Suite", layout="wide")
+# Configure wide responsive fin-tech layout format
+st.set_page_config(page_title="Trident-AI Real-Time Engine", layout="wide")
 
-# Institutional Financial Dashboard Theme Injections
 st.markdown("""
     <style>
     .stApp { background-color: #f8fafc !important; color: #1e293b !important; }
@@ -16,15 +15,14 @@ st.markdown("""
         margin-bottom: 24px;
         box-shadow: 0 4px 15px rgba(15, 23, 42, 0.15);
     }
-    .dataframe { border-radius: 8px !important; overflow: hidden !important; }
     </style>
 """, unsafe_allow_html=True)
 
 # Main Application Banner
 st.markdown("""
     <div class="header-panel">
-        <h1 style="margin: 0; font-size: 30px; font-weight: 900; letter-spacing: -0.5px;">🔱 TRIDENT-AI QUANT INTERACTIVE</h1>
-        <p style="margin: 4px 0 0 0; font-family: monospace; font-size: 13px; color: #cbd5e1;">[ Status: Fully Autonomous Market Mapping Core Active // 0% Manual Selections Required ]</p>
+        <h1 style="margin: 0; font-size: 30px; font-weight: 900; letter-spacing: -0.5px;">🔱 TRIDENT-AI SYSTEM AUTOMATION</h1>
+        <p style="margin: 4px 0 0 0; font-family: monospace; font-size: 13px; color: #cbd5e1;">[ Status: Real-Time Volume Velocity Scanner Active // Time-Stamped Alert Feed Enabled ]</p>
     </div>
 """, unsafe_allow_html=True)
 
@@ -36,24 +34,23 @@ st.error(
 )
 
 st.markdown("<br>", unsafe_allow_html=True)
-st.subheader("🤖 Live Market Activity & News Confluence Engine")
-st.write("The automation engine is actively scanning the exchanges to track down assets displaying massive "
-         "buyer/seller transactions right now, processing live news streams, and generating unified signals:")
+st.subheader("⏱️ Live Time-Stamped Execution Matrix Feed")
+st.write("The multi-resource network is scanning the live order book values to pinpoint precise block execution times:")
 
-# Trigger the entire background automation script with zero manual button barriers
-with st.spinner("Processing live volume vectors and analyzing real-time financial news RSS streams..."):
+# Trigger the automated dashboard array instantly
+with st.spinner("Synchronizing time streams and processing live transaction activity layers..."):
     automated_report = autonomous_whale_scanner()
 
 if automated_report.empty:
     st.info("The algorithm completed its workflow loop and found no active anomalies crossing our risk shields. System auto-refreshing shortly.")
 else:
-    # Present the complete, unedited, automated market execution report cleanly
+    # Present the complete, time-stamped automated market entry/exit report cleanly
     st.dataframe(automated_report, use_container_width=True, hide_index=True)
 
 st.markdown("<br><br>", unsafe_allow_html=True)
-col_btn, col_empty = st.columns([1, 4])
+col_btn, col_empty = st.columns(2)
 with col_btn:
-    if st.button("🔄 Force Re-Scan Market Volumes"):
+    if st.button("🔄 Force Re-Scan Real-Time Volumes"):
         st.rerun()
 
 st.markdown("---")
