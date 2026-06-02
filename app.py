@@ -10,7 +10,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# 2. CYBERPUNK GLASSMORPHISM INFRASTRUCTURE (THE HOOK THAT KEEPS USERS IN-APP)
+# 2. CYBERPUNK GLASSMORPHISM INFRASTRUCTURE
 st.markdown("""
     <style>
     /* Global Canvas Dark Mode Override */
@@ -125,7 +125,7 @@ if 'active_strategy' not in st.session_state:
 st.markdown("<br>", unsafe_allow_html=True)
 
 # TOP ROW: SECURE SANDBOX BALANCES CARD
-col_balance_card, col_spacing = st.columns([1, 1])
+col_balance_card, col_spacing = st.columns(2)
 with col_balance_card:
     st.markdown('<div class="quant-panel" style="padding: 16px 24px !important;">', unsafe_allow_html=True)
     st.metric(label="💰 SANDBOX SIMULATION LEDGER", value=f"₹{st.session_state.virtual_wallet:,.2f}")
@@ -203,6 +203,7 @@ if st.session_state.active_ticker:
             st.write(f"**Trident Confluence Index Score:** {result['raw_score']}/100")
             st.progress(result['raw_score'] / 100)
             
+            # FIXED INDENTATION SPACING LOOPS HERE
             if result['raw_score'] >= 75:
                 st.markdown("<div style='background:rgba(16,185,129,0.1); color:#34d399; padding:15px; border-radius:8px; border:1px solid rgba(16,185,129,0.2); font-size:14px; margin-bottom:20px;'><strong>🔥 CONFLUENCE RATING CRITICAL:</strong> Multiple tracking agents have mapped out strong buyer support structures with minimal distribution trends. Setup matches institutional criteria.</div>", unsafe_allow_html=True)
             elif 40 <= result['raw_score'] < 74:
