@@ -161,4 +161,5 @@ def process_synchronized_terminal_grid():
             if not st.session_state.user_portfolio:
                 st.caption("Your saved asset ledger is empty. Add positions above to view strategy logs.")
             else:
-                # FIXED INDENTATION: Aligned the block under the loop cleanly to prevent compilation errors
+                # CLEAN PYHTON INDENTATION LOGIC FIXED HERE
+                for item in st.session_state.user_portfolio:
