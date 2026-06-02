@@ -1,10 +1,13 @@
 import streamlit as st
 from engine import analyze_user_position, fetch_top_10_active_momentum_stocks, fetch_index_benchmarks, is_market_open, autonomous_index_scanner
+import yfinance as yf
+from datetime import datetime
+import pytz
 
-# 1. PRODUCTION CANVAS VIEWPORT SETTINGS
+# 1. ELITE PRODUCTION ENGINE WORKSPACE VIEWPORT CONFIGURATION
 st.set_page_config(page_title="Trident-AI Premium Live Terminal", layout="wide", initial_sidebar_state="collapsed")
 
-# 2. UI/UX CONFIGURATION BLOCK INJECTIONS
+# 2. MASTER "MINT PROSPERITY" LIGHT UX SKIN INJECTIONS
 st.markdown("""
     <style>
     .stApp { 
@@ -18,7 +21,7 @@ st.markdown("""
         box-shadow: 0 10px 25px -5px rgba(5, 150, 105, 0.15);
     }
     .scroll-container {
-        max-height: 500px !important; overflow-y: scroll !important; padding: 20px;
+        max-height: 450px !important; overflow-y: scroll !important; padding: 20px;
         background: #ffffff; border-radius: 14px; border: 1px solid #e2e8f0;
         box-shadow: 0 4px 20px 0 rgba(148, 163, 184, 0.08); margin-bottom: 24px;
     }
@@ -66,7 +69,7 @@ with col_status:
 
 st.markdown("<br>", unsafe_allow_html=True)
 
-# INITIALIZE PORTFOLIO LEDGER
+# INITIALIZE PORTFOLIO STATE STORAGE
 if 'user_portfolio' not in st.session_state:
     st.session_state.user_portfolio = []
 
@@ -75,11 +78,12 @@ if 'user_portfolio' not in st.session_state:
 # ==============================================================================
 @st.fragment(run_every=60)
 def process_synchronized_terminal_grid():
+    # Sync with updated engine scanner name directly
     df_intra, df_long = autonomous_index_scanner()
     top_10_stocks = fetch_top_10_active_momentum_stocks()
 
     # ==============================================================================
-    # DYNAMIC BLUEPRINT REFFERENCE: PROFESSIONAL TRADER'S DAILY TIMELINE GUIDE
+    # DYNAMIC BLUEPRINT REFERENCE: PROFESSIONAL TRADER'S DAILY TIMELINE GUIDE
     # ==============================================================================
     with st.expander("📖 PROFESSIONAL TRADER'S MASTER STRATEGY BLUEPRINT & TIMELINE BOOK", expanded=True):
         st.markdown("""
@@ -159,4 +163,3 @@ def process_synchronized_terminal_grid():
                 st.caption("Your saved asset ledger is empty. Add positions above to view strategy logs.")
             else:
                 for item in st.session_state.user_portfolio:
-                    report_analysis = analyze_user_position(item["ticker"], item["posture"])
