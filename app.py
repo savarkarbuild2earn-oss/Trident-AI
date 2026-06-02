@@ -30,17 +30,6 @@ if 'active_ticker' not in st.session_state:
 if 'active_strategy' not in st.session_state:
     st.session_state.active_strategy = "Swing"
 
-# PERSISTENT SCOREBOARD SEED DATA FOR SIMULATION CHALLENGE
-if 'leaderboard' not in st.session_state:
-    st.session_state.leaderboard = [
-        {"Rank": 1, "Trader Name": "Alpha_Quant_IN", "Virtual Balance": "₹12,45,200.00", "Weekly Gain": "+24.5%"},
-        {"Rank": 2, "Trader Name": "NiftyWhale", "Virtual Balance": "₹11,12,000.00", "Weekly Gain": "+11.2%"},
-        {"Rank": 3, "Trader Name": "You", "Virtual Balance": f"₹{st.session_state.virtual_wallet:,.2f}", "Weekly Gain": "0.0%"}
-    ]
-
-# Dynamically synchronize user ranking data on live UI updates
-st.session_state.leaderboard[2]["Virtual Balance"] = f"₹{st.session_state.virtual_wallet:,.2f}"
-
 # Display Wallet Balance prominently across the application dashboard layout
 col_wallet, col_empty_space = st.columns(2)
 with col_wallet:
@@ -66,7 +55,7 @@ if st.session_state.active_ticker:
     current_ticker = st.session_state.active_ticker
     current_mode = st.session_state.active_strategy
     
-    # Process calculations using our new multi-timeframe brain matrix
+    # Process calculations using our multi-timeframe brain matrix
     result = scan_stock(current_ticker, current_mode)
     
     if result is None:
@@ -128,7 +117,14 @@ if st.session_state.active_ticker:
         with leaderboard_tab:
             st.subheader("🏆 Trident-AI Global Practice Leaderboard")
             st.caption("Compete with elite retail portfolio managers risk-free across the globe.")
-            st.table(st.session_state.leaderboard)
+            
+            # SAFE BULLETPROOF LEADERBOARD STRUCTURING
+            leaderboard_data = [
+                {"Rank": 1, "Trader Name": "Alpha_Quant_IN", "Virtual Balance": "₹12,45,200.00", "Weekly Gain": "+24.5%"},
+                {"Rank": 2, "Trader Name": "NiftyWhale", "Virtual Balance": "₹11,12,000.00", "Weekly Gain": "+11.2%"},
+                {"Rank": 3, "Trader Name": "You (Live Strategy Account)", "Virtual Balance": f"₹{st.session_state.virtual_wallet:,.2f}", "Weekly Gain": "0.0%"}
+            ]
+            st.table(leaderboard_data)
 
 if st.session_state.portfolio:
     st.markdown("---")
@@ -143,7 +139,6 @@ if st.session_state.portfolio:
     st.markdown("### 🚀 Invite Trading Communities & Share Records!")
     col_wa, col_tg = st.columns(2)
     with col_wa:
-        # BULLETPROOF NON-CONFLICTING STRING FORMATTING FOR THE SHARE BUTTONS
         whatsapp_html = f'<a href="https://whatsapp.com{encoded_msg}" target="_blank"><button style="background-color:#25D366;color:white;border:none;padding:10px 20px;border-radius:5px;cursor:pointer;font-weight:bold;">🟢 Share to WhatsApp Trading Groups</button></a>'
         st.markdown(whatsapp_html, unsafe_url_allowed=True)
     with col_tg:
