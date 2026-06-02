@@ -1,7 +1,8 @@
 import streamlit as st
 from engine import autonomous_whale_scanner
 
-st.set_page_config(page_title="Trident-AI Market Terminal", layout="wide")
+# Configure wide responsive fin-tech layout format
+st.set_page_config(page_title="Trident-AI Streaming Terminal", layout="wide")
 
 st.markdown("""
     <style>
@@ -36,11 +37,11 @@ st.markdown("""
     <div class="header-panel">
         <div style="display: flex; justify-content: space-between; align-items: center;">
             <div>
-                <h1 style="margin: 0; font-size: 30px; font-weight: 900; letter-spacing: -0.5px;">🔱 TRIDENT-AI COMPREHENSIVE MARKET TERMINAL</h1>
-                <p style="margin: 4px 0 0 0; font-family: monospace; font-size: 13px; color: #cbd5e1;">[ Status: Market-Wide Automated Scanner Pool Active // Auto-Streaming 30s Loop ]</p>
+                <h1 style="margin: 0; font-size: 30px; font-weight: 900; letter-spacing: -0.5px;">🔱 TRIDENT-AI QUANT INTERACTIVE</h1>
+                <p style="margin: 4px 0 0 0; font-family: monospace; font-size: 13px; color: #cbd5e1;">[ Status: Fully Autonomous Market Mapping Core Active // Auto-Streaming 30s Loop ]</p>
             </div>
             <div style="text-align: right;">
-                <div class="pulse-indicator">📡 SCANNING ENTIRE NSE NIFTY 100</div>
+                <div class="pulse-indicator">📡 LIVE MULTI-HORIZON SCANNER RUNNING</div>
             </div>
         </div>
     </div>
@@ -53,41 +54,51 @@ st.error(
     "educational market strategy simulations. No certified financial advisory signals are generated here."
 )
 
+# ==============================================================================
+# CO-FOUNDER INTEGRATION: UPCOMING NSE HOLIDAY RISK ENGINE
+# ==============================================================================
+st.info(
+    "📆 **UPCOMING NSE TRADING HOLIDAYS ALERT (2026):** "
+    "Please plan your simulation allocations accordingly. The National Stock Exchange (NSE) will remain closed on:\n"
+    "*   **Bakri Id (Id-Ul-Zuha)**: Wednesday, October 28, 2026\n"
+    "*   **Diwali (Laxmi Puja)**: Sunday, November 08, 2026 *(Special 1-Hour Muhurat Trading session will open in evening)*\n"
+    "*   **Gurunanak Jayanti**: Monday, November 23, 2026\n"
+    "*   **Christmas**: Friday, December 25, 2026\n"
+    "⚠️ *Intraday positions are strictly barred from rolling over into market holidays to avoid liquidity shocks.*"
+)
+
 st.markdown("<br>", unsafe_allow_html=True)
-st.subheader("⏱️ Live Indian Stock Market Automation Grid")
-st.write("This grid monitors and scans the entire market list automatically every **30 seconds**. Use the search bar on the table to instantly find any stock or strategy segment:")
 
 # ==============================================================================
-# SELF-RUNNING REFRESH CONTAINER COMPONENT
+# SELF-RUNNING REFRESH FRAGMENT COMPONENT
 # ==============================================================================
 @st.fragment(run_every=30)
-def render_live_streaming_feed():
-    with st.spinner("Compiling full-market price metrics and syncing multi-agent sentiment arrays..."):
-        automated_report = autonomous_whale_scanner()
+def render_segregated_workspace_feeds():
+    with st.spinner("Processing market streams and updating target execution time windows..."):
+        df_intraday, df_longterm = autonomous_whale_scanner()
 
-    if automated_report.empty:
+    if df_intraday.empty or df_longterm.empty:
         st.info("The algorithm completed its workflow loop and found no active assets crossing our risk shields right now.")
     else:
-        # ADVANCED UX INTEGRATION: Interactive searchable data grid with instant filtering
-        st.dataframe(
-            automated_report, 
-            use_container_width=True, 
-            hide_index=True,
-            column_config={
-                "🧬 Scoring Index": st.column_config.ProgressColumn(
-                    "🧬 Scoring Index",
-                    help="Unified Multi-Agent Confluence Weighting Score",
-                    format="%s",
-                    min_value=0,
-                    max_value=100,
-                )
-            }
-        )
-    
-    st.caption("Entire NSE market pool processed successfully. Next automatic workflow re-run in 30 seconds.")
+        tab_intraday, tab_longterm = st.tabs([
+            "⚡ INTRADAY MOMENTUM MONITOR (High Speed)", 
+            "📈 LONG-TERM WEALTH COMPOUNDER (Macro Valuation)"
+        ])
+        
+        with tab_intraday:
+            st.subheader("⚡ Live Time-Stamped Intraday Execution Feed")
+            st.write("Ensure all trades align with the daily session window. Targets refresh automatically every 30 seconds:")
+            st.dataframe(df_intraday, use_container_width=True, hide_index=True)
+            
+        with tab_longterm:
+            st.subheader("📈 Macro Fair-Value Long Term Allocation Board")
+            st.write("Bypasses short-term pricing noise to evaluate macro target lines and safe compounding holding durations:")
+            st.dataframe(df_longterm, use_container_width=True, hide_index=True)
+            
+    st.caption("Last full market time-horizon sync completed successfully. Next automatic scan in 30 seconds.")
 
-# Launch the live interactive data fragment frame
-render_live_streaming_feed()
+# Trigger our self-running frontend fragment container loop
+render_segregated_workspace_feeds()
 
 st.markdown("---")
 st.caption("🔒 Trident-AI Proprietary Automation Architecture. 100% Non-Commercial Educational Simulation Engine.")
