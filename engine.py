@@ -64,10 +64,10 @@ def autonomous_index_scanner():
     100% Comprehensive Index Scanner: Processes every stock inside both Nifty 50 and Sensex.
     Bypasses data locks by using a secure sequential streaming arrangement.
     """
-    # COMPLETE COMBINED EXCLUSIVELY VALID NIFTY 50 AND SENSEX CONSTITUENT POOL
+    # CO-FOUNDER SHIELD FIXED: Updated BAJFINANCE.NS token token to verified BAJAFINANCE.NS asset
     index_pool = [
         "ADANIENT.NS", "ADANIPORTS.NS", "APOLLOHOSP.NS", "ASIANPAINT.NS", "AXISBANK.NS", 
-        "BAJAJ-AUTO.NS", "BAJFINANCE.NS", "BAJAJFINSV.NS", "BHARTIALRT.NS", "BPCL.NS", 
+        "BAJAJ-AUTO.NS", "BAJAFINANCE.NS", "BAJAJFINSV.NS", "BHARTIALRT.NS", "BPCL.NS", 
         "BRITANNIA.NS", "CIPLA.NS", "COALINDIA.NS", "DIVISLAB.NS", "DRREDDY.NS", 
         "EICHERMOT.NS", "GRASIM.NS", "HCLTECH.NS", "HDFCBANK.NS", "HDFCLIFE.NS", 
         "HEROMOTOCO.NS", "HINDALCO.NS", "HINDUNILVR.NS", "ICICIBANK.NS", "INDUSINDBK.NS", 
@@ -168,6 +168,8 @@ def autonomous_index_scanner():
 def analyze_user_position(stock_symbol, action_type):
     try:
         clean_symbol = stock_symbol.strip().upper().replace(".NS", "")
+        # Safe string fallback handling inside verification module too
+        if clean_symbol == "BAJFINANCE": clean_symbol = "BAJAFINANCE"
         stock = yf.Ticker(f"{clean_symbol}.NS")
         df = stock.history(period="1mo", interval="1d")
         if df.empty: return "Tracking verification pending."
