@@ -191,19 +191,29 @@ if st.session_state.active_ticker:
             "🏆 SYSTEM CHALLENGE LEADERBOARD"
         ])
         
-        # DYNAMIC HIGHLIGHTS BASED ON SYSTEM SCORING (EMERALD BULL vs CRIMSON BEAR)
-        panel_border_color = "#10b981" if result['raw_score'] >= 50 else "#ef4444"
-        panel_gradient_bg = "rgba(16,185,129,0.02)" if result['raw_score'] >= 50 else "rgba(239,68,68,0.02)"
-        
         with beginner_tab:
-            st.markdown(f'<div class="trade-panel" style="border-top: 4px solid {panel_border_color}; background: {panel_gradient_bg} !important;">', unsafe_allow_html=True)
+            st.markdown('<div class="trade-panel">', unsafe_allow_html=True)
             st.markdown(f"<h2 style='color:#0f172a; font-weight:800; font-size:22px; margin-top:0;'>Diagnostic Output: {result['decision']}</h2>", unsafe_allow_html=True)
             
             st.write(f"**Trident Mathematical Weight Confluence Index:** {result['raw_score']}/100")
             st.progress(result['raw_score'] / 100)
             
-            if result['raw_score'] >= 75:
-                st.markdown("<div style='background:#ecfdf5; color:#065f46; padding:15px; border-radius:8px; border:1px solid #a7f3d0; font-size:14px; margin-bottom:20px; font-weight:500;'>🔥 BULLISH SETUP VERIFIED: Technical indicators show strong asset accumulation with multi-agent trend alignment. Low near-term downside variance.</div>", unsafe_allow_html=True)
-            elif 40 <= result['raw_score'] < 74:
-                st.markdown("<div style='background:#fffbeb; color:#92400e; padding:15px; border-radius:8px; border:1px solid #fde68a; font-size:14px; margin-bottom:20px; font-weight:500;'>⚖️ NEUTRAL DISTRIBUTION DRIFT: Split indicator structures. Market vectors shifting sideways awaiting volume breakouts. Sizing defense recommended.</div>", unsafe_allow_html=True)
-            else:
+            st.markdown("---")
+            col_metric_1, col_metric_2 = st.columns(2)
+            with col_metric_1:
+                st.metric(label=f"LIVE MARKET VALUATION ({current_mode})", value=f"₹{result['price']}")
+            with col_metric_2:
+                st.info(f"**System Diagnostic Logic Breakdown:** {result['explanation']}")
+            
+            st.markdown("<br><h4 style='color:#0f172a; font-weight:800; margin-bottom:10px;'>📊 HISTORICAL PRICE VECTOR FEED</h4>", unsafe_allow_html=True)
+            stock_data = yf.Ticker(current_ticker).history(period="1mo" if current_mode == "Intraday" else "3mo")
+            st.line_chart(stock_data['Close'])
+            st.markdown('</div>', unsafe_allow_html=True)
+            
+        with pro_tab:
+            st.markdown('<div class="trade-panel">', unsafe_allow_html=True)
+            st.markdown("<h3 style='color:#0f172a; font-weight:800; margin-top:0;'>📊 Quantitative Metric Stream Matrix</h3>", unsafe_allow_html=True)
+            st.json({
+                "Target Asset Ticker Key": current_ticker,
+                "Operational Pipeline Routing": f"NSE India {current_mode} Feed",
+                "Algorithmic Unified Index Score": result['raw_score'],
