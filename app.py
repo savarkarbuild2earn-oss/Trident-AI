@@ -65,7 +65,6 @@ stock_dictionary = {
 # SYSTEM CONTROLS SPLIT CARD RENDER
 col_inputs, col_timeframe = st.columns(2)
 with col_inputs:
-    # REPLACED TEXT INPUT WITH THE SEARCHABLE SELECTBOX LIST
     selected_stock_label = st.selectbox("Select Target NSE Stock from List:", list(stock_dictionary.keys()))
     formatted_ticker = stock_dictionary[selected_stock_label]
 with col_timeframe:
@@ -179,6 +178,4 @@ if st.session_state.portfolio:
         st.link_button("✈️ Telegram", f"https://t.me{clean_url}&text={urllib.parse.quote('Testing trades risk-free on Trident-AI!')}")
 
 st.markdown("---")
-st.caption(
-    "🔒 **Regulatory Compliance Note:** Trident-AI is an independent, non-commercial software architecture "
-    "built for simulation, learning, and software prototyping. We are not registered with SEBI. By interacting with "
+st.caption("🔒 **Regulatory Compliance Note:** Trident-AI is an independent, non-commercial software architecture built for simulation, learning, and software prototyping. We are not registered with SEBI. By interacting with this dashboard, you acknowledge that no financial advice is being administered.")
