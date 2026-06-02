@@ -49,7 +49,7 @@ st.markdown("""
         transform: scale(1.02);
     }
     </style>
-""", unsafe_url_allowed=True)
+""", unsafe_allow_html=True) # FIXED THE NAMING PARAMETER ERROR HERE
 
 # Main Application Banner Frame
 st.markdown("""
@@ -57,7 +57,7 @@ st.markdown("""
         <h1 style="color:white; margin:0; font-size:32px;">🔱 TRIDENT-AI</h1>
         <p style="color:#8b949e; margin:5px 0 0 0; font-family:'Courier New', monospace;">[ INSTITUTIONAL QUANT SIMULATION SANDBOX v2.0 ]</p>
     </div>
-""", unsafe_url_allowed=True)
+""", unsafe_allow_html=True) # FIXED PARAMETER HERE TOO
 
 # ==============================================================================
 # SEBI LEGAL SHIELD CONTROLLER
@@ -70,7 +70,7 @@ with st.expander("⚖️ MANDATORY REGULATORY FRAMEWORK DISCLOSURE & SEBI COMPLI
             No actionable trade signals or real financial advisory loops are generated here. All sandbox actions utilize simulated currency. 
             Past performance vectors are not indicative of forward market realities. Protect your capital by consulting a certified financial planner.
         </div>
-    """, unsafe_url_allowed=True)
+    """, unsafe_allow_html=True)
 
 # Initialize Session Engine States
 if 'virtual_wallet' not in st.session_state:
@@ -82,17 +82,17 @@ if 'active_ticker' not in st.session_state:
 if 'active_strategy' not in st.session_state:
     st.session_state.active_strategy = "Swing"
 
-st.markdown("<br>", unsafe_url_allowed=True)
+st.markdown("<br>", unsafe_allow_html=True)
 
 # CONTROL BAR GRID LAYOUT
-col_wallet_card, col_blank = st.columns([1, 1])
+col_wallet_card, col_blank = st.columns(2)
 with col_wallet_card:
-    st.markdown('<div class="terminal-card" style="padding: 10px 20px;">', unsafe_url_allowed=True)
-    st.metric(label="💰 SECURE SANDBOX LEDGER BALANCE", value=f"Answering Wallet: ₹{st.session_state.virtual_wallet:,.2f}")
-    st.markdown('</div>', unsafe_url_allowed=True)
+    st.markdown('<div class="terminal-card" style="padding: 10px 20px;">', unsafe_allow_html=True)
+    st.metric(label="💰 SECURE SANDBOX LEDGER BALANCE", value=f"₹{st.session_state.virtual_wallet:,.2f}")
+    st.markdown('</div>', unsafe_allow_html=True)
 
 # ASSET SELECTOR MATRIX CARDS
-st.markdown('<div class="terminal-card">', unsafe_url_allowed=True)
+st.markdown('<div class="terminal-card">', unsafe_allow_html=True)
 col_inputs, col_timeframe = st.columns(2)
 
 stock_dictionary = {
@@ -127,11 +127,11 @@ with col_timeframe:
 
 chosen_mode = "Intraday" if "Intraday" in strategy_select else "Swing"
 
-st.markdown("<br>", unsafe_url_allowed=True)
+st.markdown("<br>", unsafe_allow_html=True)
 if st.button("⚡ EXECUTE MULTI-AGENT DIAGNOSTIC RUN"):
     st.session_state.active_ticker = formatted_ticker
     st.session_state.active_strategy = chosen_mode
-st.markdown('</div>', unsafe_url_allowed=True)
+st.markdown('</div>', unsafe_allow_html=True)
 
 # MAIN REPORT DATA GRID DISPLAY
 if st.session_state.active_ticker:
@@ -156,7 +156,7 @@ if st.session_state.active_ticker:
         ])
         
         with beginner_tab:
-            st.markdown('<div class="terminal-card">', unsafe_url_allowed=True)
+            st.markdown('<div class="terminal-card">', unsafe_allow_html=True)
             st.subheader(f"System Directional Bias: {result['decision']}")
             
             st.write(f"**Trident Confluence Index Model:** {result['raw_score']}/100")
@@ -179,10 +179,10 @@ if st.session_state.active_ticker:
             st.subheader("📊 PRICE TREND ANALYSIS ENGINE")
             stock_data = yf.Ticker(current_ticker).history(period="1mo" if current_mode == "Intraday" else "3mo")
             st.line_chart(stock_data['Close'])
-            st.markdown('</div>', unsafe_url_allowed=True)
+            st.markdown('</div>', unsafe_allow_html=True)
             
         with pro_tab:
-            st.markdown('<div class="terminal-card">', unsafe_url_allowed=True)
+            st.markdown('<div class="terminal-card">', unsafe_allow_html=True)
             st.subheader("Institutional Quantitative Breakdown Matrix")
             st.json({
                 "Target Asset Index Key": current_ticker,
@@ -192,10 +192,10 @@ if st.session_state.active_ticker:
                 "Security Risk Shield Gate": "PASSED & STABLE",
                 "Regulatory Context Compliance": "100% Non-Commercial Virtual Simulation Environment"
             })
-            st.markdown('</div>', unsafe_url_allowed=True)
+            st.markdown('</div>', unsafe_allow_html=True)
             
         with paper_trade_tab:
-            st.markdown('<div class="terminal-card">', unsafe_url_allowed=True)
+            st.markdown('<div class="terminal-card">', unsafe_allow_html=True)
             st.subheader("🎮 Simulation Execution Depth Console")
             st.write(f"Live Market Feed Rate: **₹{result['price']}**")
             
@@ -212,4 +212,3 @@ if st.session_state.active_ticker:
                         st.session_state.portfolio[current_ticker] = st.session_state.portfolio.get(current_ticker, 0) + quantity
                         st.success(f"🎉 Order execution processing clear! Allocated {quantity} shares of {current_ticker}.")
                         st.rerun()
-            st.markdown('</div>', unsafe_url_allowed=True)
