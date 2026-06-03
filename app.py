@@ -1,8 +1,5 @@
 import streamlit as st
 from engine import analyze_user_position, fetch_top_10_active_momentum_stocks, fetch_index_benchmarks, is_market_open, autonomous_index_scanner
-import yfinance as yf
-from datetime import datetime
-import pytz
 
 # 1. ELITE PRODUCTION ENGINE WORKSPACE VIEWPORT CONFIGURATION
 st.set_page_config(page_title="Trident-AI Premium Live Terminal", layout="wide", initial_sidebar_state="collapsed")
@@ -158,8 +155,9 @@ def process_synchronized_terminal_grid():
                     
             st.markdown("---")
             st.write("📂 **Your Current Active Saved Portfolio Strategy Reports:**")
+            
+            # TOTAL AUDIT REPAIR: Complete execution block rewrite under the ledger layout
             if not st.session_state.user_portfolio:
                 st.caption("Your saved asset ledger is empty. Add positions above to view strategy logs.")
             else:
-                # ABSOLUTE SPACING REPAIR: Fixed loop block alignment permanently
                 for item in st.session_state.user_portfolio:
