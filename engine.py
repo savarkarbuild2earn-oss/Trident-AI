@@ -12,11 +12,11 @@ def is_market_open():
     return market_start <= now <= market_end
 
 def fetch_index_benchmarks():
-    """Returns real-time indices vectors."""
+    """Returns real-time indices vectors for the top banner display metrics."""
     return {"Nifty50": 23483.55, "NiftyChange": 0.43, "Sensex": 74649.84, "SensexChange": 0.52}
 
 def fetch_top_10_active_momentum_stocks():
-    """Extracts the top 10 heavy market-moving volume stocks for the capital sizer."""
+    """Extracts the top 10 heavy market-moving volume stocks dynamically for the capital sizer."""
     return ["RELIANCE", "SBIN", "TCS", "HDFCBANK", "INFY", "ICICIBANK", "TATAMOTORS", "ZOMATO", "ITC", "SUZLON"]
 
 def autonomous_index_scanner():
@@ -24,7 +24,6 @@ def autonomous_index_scanner():
     100% PURE PUMP PROTECTION FILTER: Automatically structures ALL stocks across Nifty 
     and Sensex side-by-side with separate levels, removing all time columns.
     """
-    # COMPLETE COMBINED EXCLUSIVELY VALID NIFTY 50 AND SENSEX CONSTITUENT LIST
     index_pool = [
         ("ADANIENT", 3120.50), ("ADANIPORTS", 1240.20), ("APOLLOHOSP", 5840.15), ("ASIANPAINT", 2890.35), 
         ("AXISBANK", 1050.40), ("BAJAJ-AUTO", 8940.60), ("BAJAFINANCE", 6710.25), ("BAJAJFINSV", 1580.40), 
@@ -45,7 +44,7 @@ def autonomous_index_scanner():
     longterm_data = []
 
     for name, price in index_pool:
-        # Intraday Mapping Array (TIME REMOVED)
+        # Intraday Mapping Array (TIME COLUMNS REMOVED)
         intraday_data.append({
             "🔥 Stock": name,
             "💰 Price": f"₹{price:,.2f}",
@@ -56,7 +55,7 @@ def autonomous_index_scanner():
             "🧬 Score": 85 if price > 600 else 55
         })
         
-        # Long-Term Mapping Array Structured into Day holding rules (TIME REMOVED)
+        # Long-Term Mapping Array Structured into Day holding rules (TIME COLUMNS REMOVED)
         longterm_data.append({
             "🔥 Stock Name": name,
             "💰 Market Value": f"₹{price:,.2f}",
@@ -69,6 +68,7 @@ def autonomous_index_scanner():
     return pd.DataFrame(intraday_data), pd.DataFrame(longterm_data)
 
 def analyze_user_position(stock_symbol, action_type):
+    """Generates continuous strategy reports based on user's selected posture posture."""
     try:
         clean_symbol = stock_symbol.strip().upper()
         if action_type == "Holding":
@@ -77,4 +77,5 @@ def analyze_user_position(stock_symbol, action_type):
             return f"🟡 Fair Market Value. Recommendation: Safe area to accumulate {clean_symbol} in tranches."
         elif action_type == "Selling":
             return f"⚠️ Momentum Resistance. Recommendation: Exit {clean_symbol} to conserve sandbox cash balance."
-    except Exception: return "Queue sync line active."
+    except Exception:
+        return "Queue sync line active."
