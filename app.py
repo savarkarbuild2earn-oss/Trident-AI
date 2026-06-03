@@ -161,5 +161,4 @@ def process_synchronized_terminal_grid():
             if not st.session_state.user_portfolio:
                 st.caption("Your saved asset ledger is empty. Add positions above to view strategy logs.")
             else:
-                # FIXED INDENTATION SPACING LOOP HERE
-                for item in st.session_state.user_portfolio:
+                # FIXED INDENTATION: Aligned loop code paths precisely with matching indents below
