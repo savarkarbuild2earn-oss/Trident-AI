@@ -4,7 +4,7 @@ import yfinance as yf
 from datetime import datetime
 import pytz
 
-# 1. ELITE PRODUCTION ENGINE WORKSPACE VIEWPORT CONFIGURATION
+# 1. INSTITUTIONAL ENGINE WORKSPACE VIEWPORT CONFIGURATION
 st.set_page_config(page_title="Trident-AI Premium Live Terminal", layout="wide", initial_sidebar_state="collapsed")
 
 # 2. MASTER "MINT PROSPERITY" LIGHT UX SKIN INJECTIONS
@@ -74,12 +74,13 @@ if 'user_portfolio' not in st.session_state:
     st.session_state.user_portfolio = []
 
 # ==============================================================================
-# UNIFIED OPENING BELL REFRESH CONTAINER LOOPS
+# UNIFIED OPENING BELL REFRESH FRAGMENT CONTAINER LOOPS
 # ==============================================================================
 @st.fragment(run_every=60)
 def process_synchronized_terminal_grid():
     df_intra, df_long = autonomous_index_scanner()
-    top_10_stocks = fetch_top_10_active_momentum_stocks()
+    # Safely load our unrestricted top active array
+    top_active_list = fetch_top_10_active_momentum_stocks()
 
     # ==============================================================================
     # DYNAMIC BLUEPRINT REFERENCE: PROFESSIONAL TRADER'S DAILY TIMELINE GUIDE
@@ -162,4 +163,3 @@ def process_synchronized_terminal_grid():
                 st.caption("Your saved asset ledger is empty. Add positions above to view strategy logs.")
             else:
                 for item in st.session_state.user_portfolio:
-                    report_analysis = analyze_user_position(item["ticker"], item["posture"])
