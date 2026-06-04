@@ -1,6 +1,7 @@
 import streamlit as st
-from engine import analyze_user_position, fetch_top_10_active_momentum_stocks, fetch_index_benchmarks, is_market_open, autonomous_index_scanner
+from engine import analyze_user_position, optimize_capital_allocation, fetch_index_benchmarks, is_market_open, autonomous_index_scanner
 import yfinance as yf
+import urllib.parse
 from datetime import datetime
 import pytz
 
@@ -21,12 +22,12 @@ st.markdown("""
         box-shadow: 0 10px 25px -5px rgba(5, 150, 105, 0.15);
     }
     .scroll-container {
-        max-height: 450px !important; overflow-y: scroll !important; padding: 20px;
+        max-height: 560px !important; overflow-y: scroll !important; padding: 20px;
         background: #ffffff; border-radius: 14px; border: 1px solid #e2e8f0;
         box-shadow: 0 4px 20px 0 rgba(148, 163, 184, 0.08); margin-bottom: 24px;
     }
     .user-card {
-        background: #ffffff; border: 1px solid #e2e8f0; padding: 22px; border-radius: 14px;
+        background: #ffffff; border: 1px solid #e2e8f0; padding: 20px; border-radius: 14px;
         box-shadow: 0 4px 15px rgba(148, 163, 184, 0.05); margin-bottom: 20px;
     }
     button[data-baseweb="tab"] {
@@ -46,121 +47,123 @@ st.markdown("""
         <div style="display: flex; justify-content: space-between; align-items: center;">
             <div>
                 <h1 style="margin: 0; font-size: 34px; font-weight: 900; letter-spacing: -1px; color: white;">🔱 TRIDENT-AI</h1>
-                <p style="margin: 4px 0 0 0; font-family: monospace; font-size: 13px; color: #a7f3d0; font-weight:bold;">[ STATUS: UNIFIED MARKET AUTOMATION TERMINAL // ALL STOCKS ACTIVE ]</p>
+                <p style="margin: 4px 0 0 0; font-family: monospace; font-size: 13px; color: #a7f3d0; font-weight:bold;">[ STATUS: NIFTY & SENSEX LIVE SCANNERS ACTIVE // ALL RECONCILED STOCKS DEPLOYED ]</p>
             </div>
             <div style="background: rgba(255,255,255,0.2); color: white; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 700; border: 1px solid rgba(255,255,255,0.4);">
-                📡 AUTOMATED 09:15 AM SYNC
+                📡 ONCE DAILY AUTO-REFRESH
             </div>
         </div>
     </div>
 """, unsafe_allow_html=True)
 
 # SEBI LEGAL DISCLOSURE GUARDFRAIL
-st.error("⚠️ **SEBI DISCLOSURE & STATUTORY WARNING:** We are NOT registered with SEBI as an investment advisor or research analyst. All metrics simulate educational strategies.")
+st.error("⚠️ **SEBI DISCLOSURE & STATUTORY WARNING:** We are NOT registered with SEBI as an investment advisor or research analyst. All code handles simulated strategy layouts.")
 
-# FETCH DYNAMIC INDEX TRACKERS
+# FETCH DYNAMIC MARKET BENCHMARKS
 benchmarks = fetch_index_benchmarks()
 col_nifty, col_sensex, col_status = st.columns(3)
-with col_nifty: st.metric(label="📈 NIFTY 50 INDEX", value=benchmarks["Nifty50"], delta="+0.43%")
-with col_sensex: st.metric(label="🏛️ BSE SENSEX INDEX", value=benchmarks["Sensex"], delta="+0.52%")
+with col_nifty: st.metric(label="📈 NIFTY 50 INDEX", value=benchmarks["Nifty50"], delta=f"{benchmarks['NiftyChange']}%")
+with col_sensex: st.metric(label="🏛️ BSE SENSEX INDEX", value=benchmarks["Sensex"], delta=f"{benchmarks['SensexChange']}%")
 with col_status:
     market_state = "🟢 EXCHANGES OPEN" if is_market_open() else "🔴 EXCHANGES CLOSED"
     st.metric(label="📡 FEED PIPELINE STATUS", value=market_state)
 
 st.markdown("<br>", unsafe_allow_html=True)
 
-# INITIALIZE PORTFOLIO STATE STORAGE
-if 'user_portfolio' not in st.session_state:
-    st.session_state.user_portfolio = []
-
 # ==============================================================================
-# UNIFIED OPENING BELL REFRESH CONTAINER LOOPS
+# INDEPENDENT AUTO-REFRESH MATRIX FRAGMENT (CALIBRATED TO EXTRACT AT 09:15 AM ONLY)
 # ==============================================================================
+# The fragment loops every 60 seconds internally to run a silent check against the clock
 @st.fragment(run_every=60)
-def process_synchronized_terminal_grid():
-    df_intra, df_long = autonomous_index_scanner()
-    top_10_stocks = fetch_top_10_active_momentum_stocks()
-
-    # ==============================================================================
-    # DYNAMIC BLUEPRINT REFERENCE: PROFESSIONAL TRADER'S DAILY TIMELINE GUIDE
-    # ==============================================================================
-    with st.expander("📖 PROFESSIONAL TRADER'S MASTER STRATEGY BLUEPRINT & TIMELINE BOOK", expanded=True):
-        st.markdown("""
-        ### ⏱️ Core Daily Operational Schedules
-        *   **07:30 AM | Monitor GIFT Nifty:** Analyze price structures on the NSE International Exchange (NSE IX) to establish macro opening bias vectors.
-        *   **08:00 AM | Review Institutional Flows:** Inspect previous session FII / DII net turnover aggregates to determine underlying directional bias.
-        *   **08:30 AM | Filter Corporate News:** Scan systemic alerts on the corporate announcements board for corporate actions or earnings revisions.
-        *   **09:00 AM | Pre-Open Session Metrics:** Track institutional price clustering (09:00 - 09:08 AM) and pin a high-momentum 3-stock watch target grid.
-        *   **09:15 AM | Open Range Breakout (ORB):** Execute execution breakouts over high-volume parameters from the initial 15-minute range boundary line.
-        *   **09:45 AM | Options Scalping Engine:** Ride velocity surges near-the-money options using an exponential moving average crossing trigger.
-        *   **11:00 AM | Avoid Mid-Day Chop:** Scale sizing down. Protect cash capital pools from horizontal sideways chop and option theta distribution decay.
-        *   **12:30 PM | European Markets Cross:** Track FTSE & DAX opening moves to capture macro algorithms switching directional trends locally.
-        *   **01:00 PM | Open Interest (OI) Chain Scan:** Identify hard multi-strike target floors (Put Open Interest) and ceiling resistances (Call Open Interest).
-        *   **02:00 PM | Hero-or-Zero Expiry Strategy:** Stagger speculative allocation weights into low-premium index option lines specifically on expiry sessions.
-        *   **03:15 PM | Forced Squaring Off:** Clear all intraday simulation postures to preserve sandbox currency metrics securely.
-        *   **03:40 PM | Post-Market Adjustments:** Verify closing weighted averages and audit Peak Margin bounds to comply with regulatory shields.
-        *   **05:00 PM | Delivery Volume Filtering:** Identify small and mid-cap assets logging extreme delivery percentages to lock in short-term swing trading targets.
-        """)
-
-    st.markdown("<br>", unsafe_allow_html=True)
-
-    # RENDER STRATEGY WORKSPACE VIEWS
-    tab_intraday, tab_longterm, tab_command_console = st.tabs([
-        "⚡ REAL-TIME INTRADAY EXECUTIONS (50/50 Split View)", 
-        "📈 LONG-TERM POSITION COMPOUNDER (Wide View)",
-        "💼 FOUNDER STRATEGY COMMAND CONSOLE"
-    ])
+def render_live_segmented_terminal():
+    # Sync with local Indian time streams
+    ist_tz = pytz.timezone('Asia/Kolkata')
+    now_time = datetime.now(ist_tz)
     
-    with tab_intraday:
-        st.subheader("⚡ Live Intraday Data Matrix — Complete Nifty & Sensex Assets Deployed")
-        col_intra_left, col_intra_right = st.columns(2)
-        with col_intra_left:
-            st.markdown("<b style='color:#064e3b;'>🟢 GROUP ALPHA MARKET TRACKER (Stocks 1-26)</b>", unsafe_allow_html=True)
-            st.markdown('<div class="scroll-container">', unsafe_allow_html=True)
-            st.dataframe(df_intra.head(26), use_container_width=True, hide_index=True)
-            st.markdown('</div>', unsafe_allow_html=True)
-        with col_intra_right:
-            st.markdown("<b style='color:#064e3b;'>🟢 GROUP BETA MARKET TRACKER (Stocks 27-52)</b>", unsafe_allow_html=True)
-            st.markdown('<div class="scroll-container">', unsafe_allow_html=True)
-            st.dataframe(df_intra.tail(26), use_container_width=True, hide_index=True)
-            st.markdown('</div>', unsafe_allow_html=True)
+    # Check if this is the exact opening bell minute (09:15 AM)
+    is_opening_bell = (now_time.hour == 9 and now_time.minute == 15)
+    
+    # Initialize cache container memory if it doesn't exist yet upon app bootup
+    if 'cached_df_intra' not in st.session_state or 'cached_df_long' not in st.session_state:
+        with st.spinner("Initializing daily baseline stock market matrices..."):
+            st.session_state.cached_df_intra, st.session_state.cached_df_long = autonomous_index_scanner()
             
-    with tab_longterm:
-        st.subheader("📈 Long-Term Positional Valuation Engine — All Nifty & Sensex Assets (Wide View)")
-        st.markdown('<div class="scroll-container" style="max-height: 520px !important;">', unsafe_allow_html=True)
-        st.dataframe(df_long, use_container_width=True, hide_index=True)
-        st.markdown('</div>', unsafe_allow_html=True)
+    # FORCE AUTOMATED RE-SCAN ENTIRELY ONLY AT MARKET OPEN TIME (ONE TIME PER DAY)
+    if is_opening_bell:
+        st.session_state.cached_df_intra, st.session_state.cached_df_long = autonomous_index_scanner()
+        st.toast("🔔 Opening bell triggered! Automated daily re-scan completed successfully.")
+
+    df_intra = st.session_state.cached_df_intra
+    df_long = st.session_state.cached_df_long
+
+    if df_intra.empty or df_long.empty:
+        st.warning("Synchronizing cloud pipeline stream feeds. Re-running asset calculation scanner loop automatically...")
+    else:
+        tab_intraday, tab_longterm, tab_user_dashboard = st.tabs([
+            "⚡ REAL-TIME INTRADAY EXECUTIONS (50/50 Split View)", 
+            "📈 LONG-TERM POSITION COMPOUNDER (Wide View)",
+            "💼 FOUNDER STRATEGY COMMAND CONSOLE"
+        ])
         
-    with tab_command_console:
-        st.subheader("🛠️ Founder Strategic Execution & Portfolio Console")
-        col_form_left, col_form_right = st.columns(2)
-        
-        with col_form_left:
-            st.markdown('<div class="user-card">', unsafe_allow_html=True)
-            st.write("##### 💼 Multi-Stock Active Portfolio Ledger Scanner")
-            
-            col_ticker_in, col_posture_in = st.columns(2)
-            with col_ticker_in:
-                input_symbol = st.text_input("Enter Asset Ticker (e.g., RELIANCE, TCS, SBIN):", "RELIANCE").strip().upper()
-            with col_posture_in:
-                input_posture = st.selectbox("Select Target Posture Condition:", ["Holding", "Buying", "Selling"])
+        with tab_intraday:
+            st.subheader("⚡ Live Intraday Data Matrix — Nifty & Sensex Combined Assets")
+            st.caption("Left Container: Group Alpha (Index Stocks 1-25) // Right Container: Group Beta (Index Stocks 26-50)")
+            col_intra_left, col_intra_right = st.columns(2)
+            with col_intra_left:
+                st.markdown("<b style='color:#064e3b;'>🟢 GROUP ALPHA MARKET TRACKER</b>", unsafe_allow_html=True)
+                st.markdown('<div class="scroll-container">', unsafe_allow_html=True)
+                st.dataframe(df_intra.head(25), use_container_width=True, hide_index=True)
+                st.markdown('</div>', unsafe_allow_html=True)
+            with col_intra_right:
+                st.markdown("<b style='color:#064e3b;'>🟢 GROUP BETA MARKET TRACKER</b>", unsafe_allow_html=True)
+                st.markdown('<div class="scroll-container">', unsafe_allow_html=True)
+                st.dataframe(df_intra.tail(25), use_container_width=True, hide_index=True)
+                st.markdown('</div>', unsafe_allow_html=True)
                 
-            if st.button("💾 Add Position to saved Portfolio Ledger"):
-                if input_symbol and {"ticker": input_symbol, "posture": input_posture} not in st.session_state.user_portfolio:
-                    st.session_state.user_portfolio.append({"ticker": input_symbol, "posture": input_posture})
-                    st.success(f"Successfully pinned {input_symbol} into ledger.")
-                    st.rerun()
+        with tab_longterm:
+            st.subheader("📈 Long-Term Positional Valuation Engine — Wide Ledger View")
+            st.caption("Features dedicated 24-Hour clock reference logs. Holding durations calculated sequentially into explicit Day Arrays.")
+            st.markdown('<div class="scroll-container" style="max-height: 580px !important;">', unsafe_allow_html=True)
+            st.dataframe(df_long, use_container_width=True, hide_index=True)
+            st.markdown('</div>', unsafe_allow_html=True)
             
-            if st.session_state.user_portfolio:
-                if st.button("🗑️ Clear saved Ledger Data"):
-                    st.session_state.user_portfolio = []
-                    st.rerun()
-                    
-            st.markdown("---")
-            st.write("📂 **Your Current Active Saved Portfolio Strategy Reports:**")
-            
-            # FIXED INDENTATION FOR THE FOR-LOOP BLOCK PATH HERE
-            if not st.session_state.user_portfolio:
-                st.caption("Your saved asset ledger is empty. Add positions above to view strategy logs.")
-            else:
-                for item in st.session_state.user_portfolio:
+        with tab_user_dashboard:
+            st.subheader("🛠️ Interactive Allocation and Review Node")
+            col_form_left, col_form_right = st.columns(2)
+            with col_form_left:
+                st.markdown('<div class="user-card">', unsafe_allow_html=True)
+                st.write("##### 💼 Active Position Review Module")
+                user_stock = st.text_input("Enter stock ticker symbol:", "RELIANCE")
+                user_action = st.selectbox("Select your position posture:", ["Holding", "Buying", "Selling"])
+                if st.button("🔍 Fetch AI Review"):
+                    st.info(f"**Trident-AI Analyst Feedback:** {analyze_user_position(user_stock, user_action)}")
+                st.markdown('</div>', unsafe_allow_html=True)
+                
+                st.markdown('<div class="user-card">', unsafe_allow_html=True)
+                st.write("##### 📦 Brokerage Integration Router")
+                broker_select = st.selectbox("Which brokerage platform do you use?", ["Zerodha (Kite)", "Groww", "AngelOne", "Upstox", "Other"])
+                st.success(f"💡 Custom Guidance Track Optimized for **{broker_select}** terminal execution structures.")
+                st.markdown('</div>', unsafe_allow_html=True)
+            with col_form_right:
+                st.markdown('<div class="user-card">', unsafe_allow_html=True)
+                st.write("##### 💰 Capital Allocation & Strategy Sizer")
+                capital_input = st.number_input("How much capital (INR) are you looking to allocate today?", min_value=5000, value=50000, step=5000)
+                if st.button("⚡ Calculate Optimal Diversification"):
+                    st.write("###### 🤖 Recommended Capital Split Matrix for Today:")
+                    st.table(optimize_capital_allocation(capital_input))
+                st.markdown('</div>', unsafe_allow_html=True)
+
+    st.markdown("---")
+    st.info(
+        "📆 **UPCOMING LIVE NSE TRADING HOLIDAYS RISK MONITOR (REMAINDER OF 2026 CALENDAR CYCLE):**\n"
+        "*   **Bakri Id (Id-Ul-Zuha)**: Wednesday, June 17, 2026\n"
+        "*   **Independence Day**: Saturday, August 15, 2026\n"
+        "*   **Mahatma Gandhi Jayanti**: Friday, October 02, 2026\n"
+        "*   **Diwali (Laxmi Puja)**: Sunday, November 08, 2026 *(Special 1-Hour Muhurat Trading session will open in evening)*\n"
+        "*   **Gurunanak Jayanti**: Monday, November 23, 2026\n"
+        "*   **Christmas**: Friday, December 25, 2026"
+    )
+    st.caption("Workspace operational. Next automatic pipeline re-scan triggers precisely at 09:15 AM IST.")
+
+# Launch the live "Mint Prosperity" light terminal canvas loop
+render_live_segmented_terminal()
